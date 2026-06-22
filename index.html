@@ -29,6 +29,8 @@
     --amber-bg: rgba(180,83,9,0.07);
     --blue: #1D4ED8;
     --blue-bg: rgba(29,78,216,0.07);
+    --grey: #6B7280;
+    --grey-bg: rgba(107,114,128,0.07);
     --r-sm: 6px;
     --r-md: 10px;
     --r-lg: 14px;
@@ -90,40 +92,62 @@
     font-weight: 700;
   }
 
-  /* Tab Navigation */
+  /* Main Layout */
+  .main-layout {
+    display: flex;
+    min-height: calc(100vh - 80px);
+  }
+
+  /* Tab Navigation — Left Sidebar */
   .tab-nav {
     background: var(--bg-base);
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
+    border-right: 1px solid var(--border);
+    padding: 16px 0;
     display: flex;
+    flex-direction: column;
     gap: 0;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    width: 220px;
+    min-width: 220px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+
+  .tab-nav-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    padding: 12px 20px 6px;
   }
 
   .tab-nav button {
     background: none;
     border: none;
-    color: var(--text-muted);
-    padding: 12px 18px;
+    color: var(--text-primary);
+    padding: 8px 20px;
     font-family: 'Poppins', system-ui, sans-serif;
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     white-space: nowrap;
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s;
+    text-align: left;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
   }
 
   .tab-nav button:hover {
     color: var(--text-primary);
-    background: var(--wp-bg);
+    background: var(--bg-alt);
   }
 
   .tab-nav button.active {
     color: var(--wp);
-    border-bottom-color: var(--wp);
+    border-left-color: var(--wp);
     font-weight: 600;
+    background: transparent;
   }
 
   .tab-nav button.tab-primary {
@@ -131,11 +155,15 @@
   }
 
   /* Tab Content */
+  .tab-container {
+    flex: 1;
+    min-width: 0;
+  }
+
   .tab-content {
     display: none;
     padding: 28px 32px;
     max-width: 1400px;
-    margin: 0 auto;
   }
 
   .tab-content.active { display: block; }
@@ -249,6 +277,17 @@
   tr:last-child td { border-bottom: none; }
   tr:hover { background: var(--wp-bg); }
 
+  tr.row-communicated { background: var(--green-bg); }
+  tr.row-communicated:hover { background: rgba(4,120,87,0.12); }
+  tr.row-scheduled { background: var(--blue-bg); }
+  tr.row-scheduled:hover { background: rgba(29,78,216,0.12); }
+  tr.row-partial { background: var(--amber-bg); }
+  tr.row-partial:hover { background: rgba(180,83,9,0.12); }
+  tr.row-pending { background: var(--wp-bg); }
+  tr.row-pending:hover { background: rgba(234,70,72,0.1); }
+  tr.row-not-required { background: var(--grey-bg); }
+  tr.row-not-required:hover { background: rgba(107,114,128,0.12); }
+
   /* Status badges */
   .badge {
     display: inline-block;
@@ -264,6 +303,7 @@
   .badge-scheduled { background: var(--blue-bg); color: var(--blue); }
   .badge-pending { background: var(--wp-bg); color: var(--wp); }
   .badge-partial { background: var(--amber-bg); color: var(--amber); }
+  .badge-not-required { background: var(--grey-bg); color: var(--grey); }
 
   /* Editable fields */
   td[contenteditable="true"] {
@@ -338,6 +378,85 @@
     grid-template-columns: 1fr 1fr;
     gap: 20px;
     margin-bottom: 20px;
+  }
+  .tools-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .tool-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    overflow: hidden;
+  }
+
+  .tool-card-header {
+    background: var(--bg-dark);
+    color: var(--text-on-dark);
+    padding: 14px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tool-card-header::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: var(--r-full);
+    background: var(--wp);
+    flex-shrink: 0;
+  }
+
+  .tool-card-body {
+    padding: 20px;
+  }
+
+  .tool-card-body .field {
+    margin-bottom: 10px;
+  }
+
+  .tool-card-body .field:last-child { margin-bottom: 0; }
+
+  .tool-card-body .field label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 3px;
+  }
+
+  .tool-card-body .field-value {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    padding: 6px 10px;
+    background: var(--bg-alt);
+    border-radius: var(--r-sm);
+    min-height: 32px;
+    outline: none;
+    transition: background 0.2s;
+    border: 1px solid transparent;
+  }
+
+  .tool-card-body .field-value:focus {
+    background: var(--wp-bg);
+    border-color: var(--border);
+  }
+
+  .tool-card-body .field-value:empty::before {
+    content: attr(data-placeholder);
+    color: var(--text-muted);
+    font-style: italic;
+    opacity: 0.5;
   }
 
   .client-card {
@@ -430,6 +549,56 @@
   .notes-area .notes-content:focus {
     background: var(--wp-bg);
     border-color: var(--border);
+  }
+
+  .field-value ul, .notes-content ul {
+    margin: 4px 0;
+    padding-left: 18px;
+    list-style: disc;
+  }
+  .field-value ul li, .notes-content ul li {
+    padding: 2px 0;
+    line-height: 1.5;
+  }
+
+  .doc-link {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .doc-link:last-child { border-bottom: none; }
+  .doc-link a {
+    color: var(--blue);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .doc-link a:hover { color: var(--wp); text-decoration: underline; }
+  .doc-links-display { min-height: 24px; cursor: pointer; }
+  .doc-links-display:empty::before {
+    content: 'Click to add documents...';
+    color: var(--text-muted);
+    font-style: italic;
+    opacity: 0.5;
+  }
+  .doc-links-edit {
+    display: none;
+    width: 100%;
+    min-height: 80px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    font-family: inherit;
+    font-size: 13px;
+    resize: vertical;
+  }
+  .doc-links-edit:focus { border-color: var(--wp); outline: none; }
+
+  .field-value a, .notes-content a {
+    color: var(--blue);
+    text-decoration: underline;
+    word-break: break-all;
+  }
+  .field-value a:hover, .notes-content a:hover {
+    color: var(--wp);
   }
 
   .notes-area .notes-content:empty::before {
@@ -526,11 +695,16 @@
   }
 
   @media (max-width: 768px) {
+    .main-layout { flex-direction: column; }
+    .tab-nav { flex-direction: row; width: 100%; min-width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border); overflow-x: auto; overflow-y: hidden; padding: 0 12px; }
+    .tab-nav-label { display: none; }
+    .tab-nav button { border-left: none; border-bottom: 2px solid transparent; padding: 10px 14px; }
+    .tab-nav button.active { border-left-color: transparent; border-bottom-color: var(--wp); }
     .comm-summary { grid-template-columns: 1fr 1fr; }
     .client-grid { grid-template-columns: 1fr; }
+    .tools-grid { grid-template-columns: 1fr; }
     header { flex-direction: column; gap: 8px; align-items: flex-start; }
     .header-meta { text-align: left; }
-    .tab-nav { padding: 0 12px; }
     .tab-content { padding: 16px; }
   }
 
@@ -551,15 +725,18 @@
   </div>
   <div class="header-meta">
     <div><strong>Jess Grassick</strong> / Director of SEO</div>
-    <div>Final day: 31 July 2026</div>
+    <div>Final day: 30 June 2026</div>
   </div>
 </header>
 
+<div class="main-layout">
 <nav class="tab-nav" id="tabNav">
+  <div class="tab-nav-label">Overview</div>
   <button class="tab-primary active" data-tab="comms">Communication tracker</button>
+  <div class="tab-nav-label" style="margin-top:8px">Clients</div>
 </nav>
 
-<div id="tabContainer">
+<div class="tab-container" id="tabContainer">
   <!-- Communication Tracker Tab -->
   <div class="tab-content active" id="tab-comms">
     <div class="actions">
@@ -585,6 +762,8 @@
             <th>Communicated by</th>
             <th>Communicated to</th>
             <th>Method</th>
+            <th>Handed over to</th>
+            <th>Handover completed</th>
             <th>Notes</th>
           </tr>
         </thead>
@@ -592,22 +771,8 @@
       </table>
     </div>
 
-    <div class="table-wrap">
-      <h3>Internal team communication</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Person / Team</th>
-            <th>Status</th>
-            <th>Date</th>
-            <th>Method</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
-        <tbody id="internalTableBody"></tbody>
-      </table>
-    </div>
   </div>
+</div>
 </div>
 
 <footer>
@@ -621,9 +786,9 @@
 
 <script>
 const CLIENTS = [
-  { id: 'greenstone-au', name: 'Greenstone - AU' },
-  { id: 'greenstone-nz', name: 'Greenstone - NZ' },
-  { id: 'greenstone-buddy', name: 'Greenstone - BUDDY' },
+  { id: 'greenstone-au', name: 'Greenstone - Australian Seniors' },
+  { id: 'greenstone-nz', name: 'Greenstone - New Zealand Seniors' },
+  { id: 'greenstone-buddy', name: 'Greenstone - Buddy Pet Insurance' },
   { id: 'satellite-office', name: 'Satellite Office' },
   { id: 'investment-markets', name: 'Investment Markets' },
   { id: 'beauty-chef', name: 'The Beauty Chef' },
@@ -639,29 +804,28 @@ const CLIENTS = [
   { id: 'morrisons-law', name: 'Morrisons Law' },
   { id: 'artilux', name: 'Artilux' },
   { id: 'inpro', name: 'InPro' },
+  { id: 'fiig-securities', name: 'FIIG Securities' },
+  { id: 'futurity', name: 'Futurity' },
+  { id: 'aus-institute-fitness', name: 'Australian Institute of Fitness' },
+  { id: 'vinta-investment-group', name: 'Vinta Investment Group' },
+  { id: 'tool-handovers', name: 'Tool Handovers' },
 ];
 
-const INTERNAL_ROWS = [
-  'Leadership / Exec team',
-  'SEO team',
-  'Paid media team',
-  'Dev team',
-  'Account management',
-  'HR / People & culture',
-];
-
-const STORAGE_KEY = 'seo-handover-dashboard-v1';
+const STORAGE_KEY = 'seo-handover-dashboard-v69';
 
 function loadData() {
   const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) return JSON.parse(saved);
-  return {
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (parsed.comms && !parsed.comms['ihg-sydney']?.status?.includes('\n')) return parsed;
+    } catch(e) {}
+    localStorage.removeItem(STORAGE_KEY);
+  }
+  const ihgComm = { status: 'communicated', date: '2026-06-03', by: 'Ben', to: '', method: 'Call', handedTo: 'Fitz', handoverDone: 'Yes', notes: '' };
+  const defaults = {
     comms: CLIENTS.reduce((acc, c) => {
-      acc[c.id] = { status: 'pending', date: '', by: '', to: '', method: '', notes: '' };
-      return acc;
-    }, {}),
-    internal: INTERNAL_ROWS.reduce((acc, r) => {
-      acc[r] = { status: 'pending', date: '', method: '', notes: '' };
+      acc[c.id] = { status: 'pending', date: '', by: '', to: '', method: '', handedTo: '', handoverDone: 'No', notes: '' };
       return acc;
     }, {}),
     clients: CLIENTS.reduce((acc, c) => {
@@ -670,11 +834,319 @@ function loadData() {
         contractStatus: '', retainer: '', startDate: '',
         currentStrategy: '', keyPages: '', tools: '', access: '',
         risks: '', opportunities: '',
-        handoverNotes: '', activeWork: ''
+        handoverNotes: '', activeWork: '', contentManagement: '', importantDocs: ''
       };
       return acc;
     }, {})
   };
+  defaults.comms['ihg-sydney'] = { ...ihgComm, to: 'Mark & Hannah', handedTo: 'Fitz', handoverDone: 'Yes' };
+  defaults.comms['ihg-hayman'] = { ...ihgComm, to: 'Mark & Hannah', handedTo: 'Fitz', handoverDone: 'Yes' };
+  defaults.comms['ihg-sanctuary-cove'] = { ...ihgComm, to: 'Mark & Hannah', handedTo: 'Fitz', handoverDone: 'Yes' };
+  defaults.comms['greenstone-au'] = { status: 'communicated', date: '2026-06-03', by: 'Jess', to: 'Alex, Rhys', method: 'Next WIP', handedTo: 'Eitan', handoverDone: 'Yes', notes: 'Good timing, new CPO, wants to align on new strategy tied to rev & leads' };
+  defaults.comms['greenstone-nz'] = { status: 'communicated', date: '2026-06-03', by: 'Jess', to: 'Alex, Rhys', method: 'Next WIP', handedTo: 'Eitan', handoverDone: 'Yes', notes: 'Good timing, new CPO, wants to align on new strategy tied to rev & leads' };
+  defaults.comms['greenstone-buddy'] = { status: 'communicated', date: '2026-06-03', by: 'Jess', to: 'Alex, Rhys', method: 'Next WIP', handedTo: 'Eitan', handoverDone: 'Yes', notes: 'Good timing, new CPO, wants to align on new strategy tied to rev & leads' };
+  defaults.comms['roomia'] = { status: 'communicated', date: '2026-05-29', by: 'Jess', to: 'Kathy', method: 'In Person', handedTo: 'Eitan', handoverDone: 'Yes', notes: 'Good. Needs strategic layer over Ra.' };
+  defaults.comms['satellite-office'] = { status: 'not-required', date: '', by: '', to: '', method: '', handedTo: 'Mason', handoverDone: 'No', notes: '' };
+  defaults.comms['beauty-chef'] = { status: 'not-required', date: '', by: '', to: '', method: '', handedTo: 'Fitz', handoverDone: 'No', notes: '' };
+  defaults.comms['ata-scientific'] = { status: 'not-required', date: '', by: '', to: '', method: '', handedTo: 'Mason', handoverDone: 'No', notes: '' };
+  defaults.comms['storage-plus'] = { status: 'not-required', date: '', by: '', to: '', method: '', handedTo: 'Mason', handoverDone: 'No', notes: '' };
+  defaults.comms['artilux'] = { status: 'not-required', date: '', by: '', to: '', method: '', handedTo: 'Mason', handoverDone: 'No', notes: '' };
+  defaults.comms['inpro'] = { status: 'not-required', date: '', by: '', to: '', method: '', handedTo: 'Mason', handoverDone: 'No', notes: '' };
+  defaults.comms['investment-markets'] = { status: 'communicated', date: '2026-06-04', by: 'Jess', to: 'Cam & Nicole', method: 'Next WIP', handedTo: 'Eitan', handoverDone: 'Yes', notes: 'Good. Eitan smashed it.' };
+  defaults.comms['keksia'] = { status: 'communicated', date: '2026-06-09', by: 'Jess', to: 'Nenad', method: 'Email', handedTo: 'Mason', handoverDone: 'Yes', notes: '' };
+  defaults.comms['morrisons-law'] = { status: 'communicated', date: '2026-06-09', by: 'Jess', to: 'Matt', method: 'Next WIP', handedTo: 'Eitan', handoverDone: 'Yes', notes: '' };
+  defaults.comms['urban-newtown'] = { status: 'scheduled', date: '2026-06-24', by: 'Jess', to: 'Zsofia', method: 'Next WIP', handedTo: 'Mason', handoverDone: 'Yes', notes: '' };
+  defaults.comms['jmc-academy'] = { status: 'communicated', date: '2026-06-09', by: 'Ben', to: 'Rosemary', method: 'TBD', handedTo: 'Fitz', handoverDone: 'No', notes: '' };
+  defaults.comms['fiig-securities'] = { status: 'communicated', date: '2026-06-04', by: 'Jess', to: 'Sarah', method: 'Email', handedTo: 'Matt', handoverDone: 'No', notes: 'RFP incoming. Sales relationship, not active SEO client. Ben taking lead.' };
+  defaults.comms['futurity'] = { status: 'not-required', date: '', by: '', to: '', method: '', handedTo: 'Matt', handoverDone: 'No', notes: 'Website uplift project. Matt + Jess finalizing delivery. Should be done in June.' };
+  defaults.comms['aus-institute-fitness'] = { status: 'not-required', date: '', by: '', to: '', method: '', handedTo: 'Eitan', handoverDone: 'No', notes: 'Louise reaches out to Jess directly. Rahil needs to become go-to. SEO scope picking up again in June.' };
+  defaults.comms['vinta-investment-group'] = { status: 'communicated', date: '2026-06-15', by: 'Jess', to: 'Marty', method: '', handedTo: 'Ales', handoverDone: 'Yes', notes: 'Brendan = execution lead. Paul = senior relationship (above Brendan). Marty expects someone senior.' };
+  defaults.comms['tool-handovers'] = { status: 'pending', date: '', by: '', to: 'Fitz', method: '', handedTo: 'Ben', handoverDone: 'No', notes: 'SEMrush, BrightLocal, DataForSEO, login audit' };
+
+  // Client contacts
+  const contacts = {
+    'greenstone-au': {
+      mainContact: 'Alexandra Mangona',
+      contactRole: '2+ years at Greenstone. New Head of Performance also hired (needs intro).',
+      contactEmail: 'Alexandra.Mangona@greenstone.com.au',
+      contractStatus: 'Active',
+      retainer: '$10,000/mo',
+      startDate: '2015 (10+ years)',
+      currentStrategy: 'Visibility-only client. Defend commercial terms: "funeral insurance" (positions 2-4) and "life insurance" (page 2, sometimes page 1).\nOnly micro-optimisations recommended (big changes die in brand/product compliance pipeline).\nPage structure: commercial pages + supplementary pages + discovery hub (life and funeral categories).\nSignificant cannibalisation across pages (what is life insurance, life insurance for seniors, how does life insurance work).\nEEAT impossible: distributor not insurer, no insurance expert in business, won\'t hire third-party (PR risk).\nLLM entity confusion: AU Seniors seen as membership org (Dare Magazine subscription muddies entity).\nAge-segment pages in pipeline (life insurance for 50s, 60s etc. based on GSC queries).\nLife insurance category review with Alex for implementation.\nMicro-optimisations delivered across life insurance category.',
+      keyPages: '/life-insurance/ category pages\n/funeral-insurance/ category pages\nDiscovery hub (life and funeral categories)\nAge-segment pages (in pipeline)',
+      tools: 'GA4 property: 378646471\nGSC available in MCP\nSupabase client name: "Seniors Insurance Agency"\nNotion drive with specific process docs\nGoogle Sheets tracker for WIP',
+      access: 'Email is primary contact method.\nFortnightly WIP meetings (agenda in Notion meeting notes).\nAlex doesn\'t contribute to agenda, just wants updates.\nImplementation is slow: brand compliance + product compliance pipeline.\nNo pricing/premiums on pages (too risky as distributor).\nContent briefs must use Greenstone\'s template (not ours). Separate templates for new write vs rewrite.',
+      contentManagement: 'We do NOT produce content. We create briefs only (for their content vendor or internal copywriters).\nBrief goes to them, they send first version of multi-page variations, we give feedback, they roll out the rest into development.\nBrief templates in Notion under Greenstone Process Documentation (linked in docs).\nTech team runs fortnightly sprints. Get technical requests in before Monday sprint planning so Alex can prioritise.\nReporting/task briefs: they value simplified, high-level summaries. Simple is better. Don\'t over-research or over-detail.\nSame process for AU, NZ, and Buddy.',
+      risks: 'Cannibalisation hurting life insurance rankings.\nEEAT unachievable with current business model.\nEntity confusion in LLMs.\nSlow implementation pipeline.\nHead of content no longer with business (focusing on AI content scaling).\nVery difficult business to influence (processes unchanged in 10 years).',
+      opportunities: 'Age-segment pages (life insurance for 50s, 60s) based on real GSC demand.\nResolve cannibalisation to improve life insurance rankings.\nResearch reports (Grandparents, Scams, Grey Gap, Cost of Death) for PR/citations.\nGrant program for link building and CSR.',
+      handoverNotes: 'Visibility client only: rankings, GSC, AI Overviews, link building. Do NOT include GA4 conversion/lead tracking.\nFortnightly meetings with Alex. She just wants updates.\nNew Head of Performance hired, needs intro.\nGrant program runs Feb-Nov (see Buddy tab for details).\nLink acquisition: 3 links/mo to product pages via Earned Media partner.\nMay be asked to attend all-day research report brainstorm sessions (live collab doc, performance update, brainstorm new topic).\nContent workshops: populate Greenstone\'s template with keyword research, trends, organic performance, top articles.\nSegment GSC data by folder path (/funeral-insurance/ and /life-insurance/).',
+      activeWork: 'Life insurance category review (with Alex for implementation).\nMicro-optimisations across life insurance category (with them).\nAge-segment pages in pipeline.\nGrant outreach (Josette managing).\nLink acquisition via Earned Media.',
+      importantDocs: 'Handover recording (Fathom) | https://fathom.video/share/ozMMaVz1_2z4b8ZZVK4C9xcJ7rNZU_mC\nGreenstone Process Documentation (Notion) | https://www.notion.so/webprofits/GREENSTONE-PROCESS-DOCUMENTATION-1ff35e677f0780f49cfed0b340ff602b\nGreenstone WIP Tracker (Google Sheets) | https://docs.google.com/spreadsheets/d/1te3SZRIl0GTmgoB0qtc6iE8TukYtT5a9wM_1MPf5eHU/edit?gid=985855040#gid=985855040\nGreenstone Link Acquisition Tracker (Google Sheets) | https://docs.google.com/spreadsheets/d/1UlHfuB6a4IPM7R0CKiCPGvN9PUmdBFZzeCQyf3xb-Ec/edit?gid=1179258043#gid=1179258043\nGrantMatch (outreach brand) | https://grantmatch.com.au/\nGreenstone SEO Task List (Google Sheets) | https://docs.google.com/spreadsheets/d/12XQ3Wge91F0mQsCNpGfHT9YIiKm86esGZQr0o0k-3Gw/edit?gid=0#gid=0\nLast Monthly Report Apr 2026 (pw: growth88) | https://webprofits.ai/jess-g/au-seniors-digital-performance-apr-2026/\nLLM Visibility Report May 2026 (pw: growth88) | https://webprofits.ai/jess-g/au-seniors-llm-visibility-may-2026/'
+    },
+    'greenstone-nz': {
+      mainContact: 'Alexandra Mangona',
+      contactRole: '2+ years at Greenstone. Same contact for all three brands.',
+      contactEmail: 'Alexandra.Mangona@greenstone.com.au',
+      contractStatus: 'Active',
+      retainer: '$6,500/mo',
+      startDate: '2015 (10+ years)',
+      currentStrategy: 'Visibility-only client. Same model as AU Seniors: defend "funeral insurance" and "life insurance" commercial terms.\nSame cannibalisation and EEAT challenges as AU.\nGrant outreach to NZ institutions only.',
+      keyPages: '/life-insurance/ category pages\n/funeral-insurance/ category pages',
+      tools: 'GA4 property: 378656778 ("NZ Seniors GA4 Main Property")\nGSC not in MCP (use CSV export)\nComprehensive schema: Organization, FAQPage, FinancialProduct, Product, BreadcrumbList, Speakable. Only Article schema missing on blog/discover posts.',
+      access: 'Same as AU Seniors. Fortnightly WIP with Alex.',
+      contentManagement: 'We do NOT produce content. We create briefs only (for their content vendor or internal copywriters).\nBrief goes to them, they send first version of multi-page variations, we give feedback, they roll out the rest into development.\nBrief templates in Notion under Greenstone Process Documentation (linked in docs).\nTech team runs fortnightly sprints. Get technical requests in before Monday sprint planning so Alex can prioritise.\nReporting/task briefs: they value simplified, high-level summaries. Simple is better. Don\'t over-research or over-detail.\nSame process for AU, NZ, and Buddy.',
+      risks: 'Same cannibalisation and EEAT challenges as AU.\nLife insurance rankings volatile (branded terms collapsed since March).',
+      opportunities: 'Same age-segment page opportunity.\nResearch reports (same program as AU).\n4 links/mo via Earned Media (to "insurance for seniors" pages).',
+      handoverNotes: 'Same visibility-only approach as AU.\nGrant outreach to NZ institutions only (Josette managing).\n4 links/mo to insurance for seniors pages.\nDo NOT claim schema is absent (comprehensive schema deployed).\n7-priority ranking recovery plan exists.',
+      activeWork: 'Grant outreach (NZ institutions).\nLink acquisition via Earned Media.\nRanking volatility remediation.',
+      importantDocs: 'Handover recording (Fathom) | https://fathom.video/share/ozMMaVz1_2z4b8ZZVK4C9xcJ7rNZU_mC\nGreenstone Process Documentation (Notion) | https://www.notion.so/webprofits/GREENSTONE-PROCESS-DOCUMENTATION-1ff35e677f0780f49cfed0b340ff602b\nGreenstone WIP Tracker (Google Sheets) | https://docs.google.com/spreadsheets/d/1te3SZRIl0GTmgoB0qtc6iE8TukYtT5a9wM_1MPf5eHU/edit?gid=985855040#gid=985855040\nGreenstone Link Acquisition Tracker (Google Sheets) | https://docs.google.com/spreadsheets/d/1UlHfuB6a4IPM7R0CKiCPGvN9PUmdBFZzeCQyf3xb-Ec/edit?gid=1179258043#gid=1179258043\nGrantMatch (outreach brand) | https://grantmatch.com.au/\nGreenstone SEO Task List (Google Sheets) | https://docs.google.com/spreadsheets/d/12XQ3Wge91F0mQsCNpGfHT9YIiKm86esGZQr0o0k-3Gw/edit?gid=0#gid=0\nLast Monthly Report Apr 2026 (pw: growth88) | https://webprofits.ai/jess-g/nz-seniors-digital-performance-apr-2026/\nLLM Visibility Report May 2026 (pw: growth88) | https://webprofits.ai/jess-g/nz-seniors-llm-visibility-may-2026/'
+    },
+    'greenstone-buddy': {
+      mainContact: 'Alexandra Mangona',
+      contactRole: '2+ years at Greenstone. Same contact for all three brands.',
+      contactEmail: 'Alexandra.Mangona@greenstone.com.au',
+      contractStatus: 'Active',
+      retainer: '$6,500/mo',
+      startDate: 'Buddy launched June 2025 (formerly RSPCA Pet Insurance)',
+      currentStrategy: 'Visibility-only client. Defend "pet insurance" (currently page 2, goal is page 1).\nFormerly RSPCA Pet Insurance (Greenstone serviced RSPCA site 10+ years). Partnership ended, launched Buddy brand.\nRedirects from RSPCA to Buddy were implemented, then RSPCA reversed and reclaimed content.\nLink reclamation campaign started May 2026: contacting sites that linked to now-404\'d RSPCA pages.\nPillar pages: Travelling with Pets, Pet Grooming Tips, Signs of Heat Stroke in Pets.\nImage restrictions: can\'t use certain breeds (pugs, genetically predisposed breeds). Alex will flag.',
+      keyPages: 'Pet insurance product pages\nTravelling with Pets (pillar)\nPet Grooming Tips (pillar)\nSigns of Heat Stroke in Pets (pillar)',
+      tools: 'Supabase project: 3abf750a (Greenstone)\nClient enrichment complete',
+      access: 'Same as AU/NZ Seniors. Fortnightly WIP with Alex.\nAdditional compliance layer: commercial/product team reviews all copy.',
+      contentManagement: 'We do NOT produce content. We create briefs only (for their content vendor or internal copywriters).\nBrief goes to them, they send first version of multi-page variations, we give feedback, they roll out the rest into development.\nBrief templates in Notion under Greenstone Process Documentation (linked in docs).\nTech team runs fortnightly sprints. Get technical requests in before Monday sprint planning so Alex can prioritise.\nReporting/task briefs: they value simplified, high-level summaries. Simple is better. Don\'t over-research or over-detail.\nSame process for AU, NZ, and Buddy.',
+      risks: 'RSPCA content reversal caused ranking disruption.\nPet insurance is competitive, currently page 2.\nImage usage restrictions on certain breeds.',
+      opportunities: 'Link reclamation from old RSPCA backlinks (getting good traction).\nFuture Animal Carers Grant (animal care, vet nursing, animal studies undergrads).\nPillar pages performing well, can attract links.',
+      handoverNotes: 'Grant program: "Future Animal Carers Grant" for animal care/vet nursing students. AU institutions only.\nGrant judging (Oct 20): strict compliance. Three-party review (Greenstone marketing, brand team, us).\nRules: valid ID, full-time enrollment (no deferred), essay under 700 words. Past issue: deferred student got through.\nGrant outreach via grantmatch.com.au (Webprofits-owned). Josette manages, tracked in SEO Task List Board under "Grant Outreach Monthly Reporting".\nMonthly tracking: emails sent, submissions, replies, active conversations, declined, bounced, links earned.\nNeed grant email access for reviewing submissions (organise credentials with Alex).\nLink acquisition via Earned Media partner to pet insurance pages.',
+      activeWork: 'Link reclamation campaign (contacting old RSPCA link sources).\nGrant outreach (Josette managing, AU institutions).\nLink acquisition via Earned Media.',
+      importantDocs: 'Handover recording (Fathom) | https://fathom.video/share/ozMMaVz1_2z4b8ZZVK4C9xcJ7rNZU_mC\nGreenstone Process Documentation (Notion) | https://www.notion.so/webprofits/GREENSTONE-PROCESS-DOCUMENTATION-1ff35e677f0780f49cfed0b340ff602b\nGreenstone WIP Tracker (Google Sheets) | https://docs.google.com/spreadsheets/d/1te3SZRIl0GTmgoB0qtc6iE8TukYtT5a9wM_1MPf5eHU/edit?gid=985855040#gid=985855040\nGreenstone Link Acquisition Tracker (Google Sheets) | https://docs.google.com/spreadsheets/d/1UlHfuB6a4IPM7R0CKiCPGvN9PUmdBFZzeCQyf3xb-Ec/edit?gid=1179258043#gid=1179258043\nGrantMatch (outreach brand) | https://grantmatch.com.au/\nTravelling with Pets (pillar) | https://www.buddypetinsurance.com.au/pet-insurance/the-dish/travelling-with-pets\nPet Grooming Tips (pillar) | https://www.buddypetinsurance.com.au/pet-insurance/the-dish/pet-grooming-tips\nSigns of Heatstroke in Pets (pillar) | https://www.buddypetinsurance.com.au/pet-insurance/the-dish/signs-of-heatstroke-in-pets\nLast Monthly Report Apr 2026 (pw: growth88) | https://webprofits.ai/jess-g/buddy-digital-performance-apr-2026/\nLLM Visibility Report May 2026 (pw: growth88) | https://webprofits.ai/jess-g/buddy-llm-visibility-may-2026/'
+    },
+    'satellite-office': { mainContact: 'Jennifer Javier, Michelle Cook', contactRole: 'Jennifer = Director of Marketing Acquisition', contactEmail: 'jenniferj@satelliteoffice.com, michellec@satelliteoffice.com' },
+    'investment-markets': {
+      mainContact: 'Simon Turner (content), Darren (CEO), Nicole (marketing), Cam (developer)',
+      contactEmail: 'simon.turner@investmentmarkets.com.au',
+      currentStrategy: 'Investment comparison website\nAffiliate model: investors pay for featured listings/advertising, goal is traffic growth driving inquiries\n"In-depth academic content" not generalised, targeting AU investors\nAsset class pages enriched with SEO essays over last 12 months\n1000+ ETF pages no-indexed (thin content, awaiting sales program)\n10x podcast strategy: website + YouTube + shorts (shorts performing well)',
+      keyPages: 'Asset class pages (ETFs, managed funds, etc.)\n/investments/ hub page\nPodcast landing page\nAbout Us (being rebuilt for E-E-A-T)',
+      tools: 'GA4: search "IM Preview" not "Investment Markets"\nClient enrichment in Supabase\nNotion (limited client adoption)\nEmail is primary comms channel',
+      access: 'Dedicated developer Cam (often on calls)\nFast at implementation',
+      risks: 'Hit by March 2026 Google content + spam updates, traffic fell off a cliff\nGoogle Finance product launched (direct threat)\nAI Overviews reducing clicks for informational finance queries\nSimon may be using ChatGPT with poor prompts for content (told to switch to Claude, unconfirmed)\nCTA-heavy pages may hurt quality signals\nRecovery could take 12 months',
+      opportunities: 'LLM visibility/citations: client responsive to new direction\nVery fast at implementation\nRetroactive content improvement across existing articles\nOff-site: get contributors featured on other finance websites\nPillar page could restructure internal linking\nPodcast repurposing (10x strategy partially implemented)',
+      handoverNotes: 'Client communicates primarily via email\nVery responsive, will implement what you recommend\nJess back on client last 2 months only\nMSPs monthly\nComms timing with Matt re: when Eitan joins WIPs\nEmail Simon re: AI tool update\nDisclosure boilerplate currently with legal, window to propose edits now',
+      activeWork: 'E-E-A-T remediation in flight: new About Us page, author bio enrichment, site-wide disclosure boilerplate (with legal)\nContent workshop planned for writers (briefing-to-publishing process, send prep Qs to Simon)\nJune MSP: paid search category targeting test, interactive pillar page ("compare Australian investments"), content workshop, shorts, email',
+      contentManagement: 'They prepare their own content. We provide the brief, they write to it.\nThey send it back to us for QA. We give recommendations, then they publish.\nSimon is primary content contact (simon.turner@investmentmarkets.com.au).\nThey were using ChatGPT with a poor prompt. Recommended migration to Claude (unconfirmed if adopted).\nBriefs historically focused on asset class content. Now moving into broader content strategy consulting.\nHigh investment up front (brief + strategy), then low touch from there.',
+      importantDocs: 'Handover recording (Fathom) | https://fathom.video/calls/686300380\nLLM Visibility Report May 2026 (pw: growth88) | https://webprofits.ai/jess-g/investmentmarkets-llm-visibility-may-2026/\nSEO Review May 2026 (pw: growth88) | https://webprofits.ai/jess-g/investmentmarkets-seo-review-may-2026/'
+    },
+    'beauty-chef': { mainContact: 'TBD' },
+    'keksia': {
+      mainContact: 'Nenad Pesik',
+      contactRole: 'Managing Director',
+      contactEmail: 'nenad@keksia.com.au',
+      contractStatus: 'Active',
+      currentStrategy: 'Pedestals are the unique product (grid system + innovations). Decking and cladding are commodity products (sourced from China, same as competitors, not differentiable).\nFocus: go hard on pedestals for e-commerce and visibility. Decking/cladding remain lead-gen only.\nAlready selling pedestals via TradyCart (wholesale arrangement, they on-sell with margin).\nE-commerce decision made Jan 2026: push for it, pedestals only. Simpler to ship, enough product differentiation.\nNeed product reviews and star ratings for shopping feeds.\nNeed pricing visible on product pages (currently only in backend/feed, not customer-facing). Required for AI shopping research visibility.\nContent strategy: answer all questions across consumer funnels (architects, tradies, retail DIY). Project guidance not just product specs.\nArchitect hub and tradies hub planned. Energy efficiency content (new legislation). Materials, maintenance, longevity content.\nAgentic commerce (ChatGPT shopping) coming to AU ~Q4 FY2027. Need to be positioned before it arrives.',
+      keyPages: 'Pedestal product pages (e-commerce candidates)\nDecking category pages\nCladding category pages\nArchitect hub (planned)\nTradies hub (planned)',
+      tools: 'JS-rendered site (poor Lighthouse scores)\nCustom CMS built by previous owners (developer Pedro, expensive, inflexible)\nNo direct backend access (inherited from previous owners)',
+      access: 'Fortnightly WIP meetings.\nNenad is hands-on, wants things done properly not cheaply.\nBrendan on account.',
+      risks: 'Website migration spanning departure window. Current custom CMS is a blocker for everything.\nPedro (current dev) charges ~$11K for 3 pages. No CMS access without developer.\nTemu showing up in Google Ads for pedestal products (terrible quality, safety risk, but visibility threat).\nCompetitors: Bowens, Dowsons (stores with pickup model). NeeraJack (NZ pedestal competitor).\nShipping complexity: palletised orders need manual handling (Adlets, Samsons). Only small orders (TNT, Aramax) can be automated.',
+      opportunities: 'Pedestals e-commerce via WooCommerce or Shopify (decision pending).\nLink reclamation and product reviews for shopping feeds.\nOwn the narrative on product quality vs cheap imports.\nDual CTA on product pages: "Buy Online" for ready buyers, "Inquire Now" for complex projects.\nLoyalty/rewards program for tradies (if Shopify chosen).\nRetail market expansion (Nenad wants more retail alongside commercial).',
+      handoverNotes: 'Website migration is the critical path. Nenad evaluating WordPress (WooCommerce) vs Shopify.\nTwo WordPress dev quotes: $4K (sketchy) and $15K (more thorough with Figma).\nBoundary Studio referral from Jess (WordPress agency, good reputation).\nJess also offered to ask WP Shopify team for smaller-project Shopify dev referrals.\nDev pre-qualifying questions were to be sent to Nenad.\nPedestals only for e-commerce. Decking/cladding too bulky (palletised, manual freight).\nImage of product is hands-on: 50% of sales conversations are about the project, not the product. Customers often measure wrong.\nNenad wants to "rip the Band-Aid off" on website migration. Doesn\'t want to repeat custom CMS mistakes.\nContent briefs: focus on pre-qualifying buyers through content (what to consider for your project, not just product specs).',
+      activeWork: 'Website migration (CMS decision pending: WordPress vs Shopify).\nThree category page redesigns (were with Pedro, now part of migration).\nLLM visibility strategy.',
+      importantDocs: 'LLM Visibility Report May 2026 (pw: growth88) | https://webprofits.ai/jess-g/keksia-llm-visibility-may-2026/\nStrategy meeting recording Jan 2026 (Fathom) | https://fathom.video/share/PqX-CX9m2nMkHkb23hrpaU9W7YR4fNgp\nHandover recording (Fathom) | https://fathom.video/calls/694918987'
+    },
+    'ata-scientific': { mainContact: 'Theano Stafidas', contactRole: 'Marketing Manager', contactEmail: 'TStafidas@atascientific.com.au' },
+    'ihg-sydney': {
+      mainContact: 'Mark Newey (Area Manager, all 3 properties), Hannah (Marketing, Sydney)',
+      contactEmail: 'Mark.Newey@ihg.com, hannah.coomber@ihg.com',
+      contractStatus: 'Active. ~$120K/yr (agency + ad spend). Calendar year budget cycle.',
+      retainer: '$120K/yr total media (Paid Social $53.7K, Paid Search $31.2K, OTAs $18.5K)',
+      currentStrategy: 'City hotel, event-driven seasonality (Vivid, Mother\'s Day, Christmas, NYE).\nVerticals: Accommodation, Aster (cocktail bar), Treasury Bar and Lounge, Weddings (Vera Wang), MICE.\nHistorically $2M above budget in Q4.\nTrip.com active for Chinese holidays (~6/yr, spend ~$1K, return $30-50K).\nBooking window 21+ days.',
+      keyPages: 'Weddings performance page (Vera Wang)\nMICE performance page\nAccommodation offer landing pages (origin-coded)',
+      tools: 'Meta Ad Account: act_758065834347759\nGA4: 391311787\nBooking intent event: book_room_search_click\nWebsite dev: Komosion (no FTP, quarterly dev blocks ~$10K)\nWordPress CMS access available\nEmail: Revenate\nPMS: Opera\nRate codes: PMIS\nBI: BI Data\nVenues/events: Delphi (no access granted)',
+      access: 'Basic WordPress CMS access. No FTP. Dev requests go through Komosion.\nCRM data provided monthly (2 years history). Revenue column ambiguity: "room revenue" vs "total room revenue" vs "max room revenue" (even IHG don\'t know which is correct).',
+      risks: 'Political client: everything operates on who endorses whom. New Mulpha owners need educating on digital programme.\nNo direct booking conversion tracking (IHG owns reservation system). Months-long effort, no workaround.\nM&E is categorically hard: low search volume, leads take months. Delphi CRM access never granted.\nEmail fragmented across 3 sources (concierge, IHG corporate, hotel marketing). We\'ve tried to fix for years.\nReview generation blocked: IHG controls check-in/check-out flow.\nKomosion dev: no transparency on pricing, our requests typically not in quarterly blocks.',
+      opportunities: 'AEO workshop with all properties planned (as of May 2026).\nInternational market untapped (domestic only to date). Global OTA spend = opportunity.\nEmail: recently started helping with campaign flows for Hotel Direct. First time in email. Full customer lifecycle is goal.\nSchema comprehensive across 8 pages (Hotel, WebSite, BreadcrumbList, AggregateRating, HotelRoom, Offer, EventVenue, MeetingRoom, Restaurant x2, TouristDestination, FAQPage).',
+      handoverNotes: 'IHG is a franchise. 3 properties owned by Mulpha (investment company). We never speak to owners directly, Mark is interface.\nMark sees us as strategists. If you need something done, go to Mark.\nNew owners want: "Am I getting a good return?" Two monthly reports: full digital + one-page exec summary (blended ROAS, enquiries, what\'s in market).\nRevenue attribution: every campaign has origin code. We report bookings CREATED in month. IHG reports bookings CONSUMED (stayed). Figures will differ.\nFortnightly WIP cadence. Internal team: Mason (reporting), Kath (paid social).\nProperties defected from Ignite (only IHG properties doing this).\nBudgets haven\'t accounted for CPI in 2 years. Recommend adjustment next cycle.',
+      activeWork: 'Accommodation scaling (77% budget-lost impression share).\nM&E paid search fix (0 conversions).\nWedding creative rebuild (frequency 3.24).\nM&E performance page launch.\n10 SEO articles in Notion (5 approved for publishing).',
+      importantDocs: 'IHG Client Context Card (pw: growth88) | https://webprofits.ai/jess-g/ihg-client-context-card/\nLast Monthly Report Apr 2026 (pw: growth88) | https://webprofits.ai/jess-g/intercontinental-sydney-digital-performance-apr-2026/\nLLM Visibility Report May 2026 (pw: growth88) | https://webprofits.ai/jess-g/sydney-llm-visibility-may-2026/\nMSP June 2026 (pw: growth88) | https://webprofits.ai/jess-g/intercontinental-sydney-msp-june-2026/\nOffer Activation Framework (Notion) | https://www.notion.so/webprofits/InterContinental-Offer-Activation-Framework-31835e677f0780c5a39eecdb578173c7\nLow Season Strategy Feb-Jun (Notion) | https://www.notion.so/webprofits/Low-Season-Strategy-February-June-2b935e677f0780188895de2491d97ba4\nSydney Budget Sheet | https://docs.google.com/spreadsheets/d/1Ihh4LJR9_-nCArPb5IUE8tJqEzw9ChtqinFw5aYk2x0/edit?gid=959895361#gid=959895361\nCRM Report | https://docs.google.com/spreadsheets/d/1sDVI-1YP1vKgEI4-tZUhf87SclWw4JWX1P3AjL2Bx60/edit?gid=963712881#gid=963712881\nRate Codes | https://docs.google.com/spreadsheets/d/1LiZm3OOQx9XbChrm9lZtNOI6Wx26CPvUTxBUZpK1DOE/edit?gid=732651501#gid=732651501\nWeb Codes | https://docs.google.com/spreadsheets/d/1LiZm3OOQx9XbChrm9lZtNOI6Wx26CPvUTxBUZpK1DOE/edit?gid=1892501853#gid=1892501853\nIHG Report Creation (Fathom) | https://fathom.video/calls/699876470\nExpedia Travel Ads Optimisation Demo (Fathom) | https://fathom.video/calls/254493655\nOTA Reporting (Notion) | https://www.notion.so/webprofits/OTA-Reporting-29835e677f0780498570ebd2f07f71a1\nOTA Sponsored Listings Management (pw: growth88) | https://webprofits.ai/jess-g/ihg-ota-management/'
+    },
+    'ihg-hayman': {
+      mainContact: 'Mark Newey (Area Manager), Sam (new DOSM), Shauna (Marketing Manager), Karen (moving from SC to fix operations)',
+      contactEmail: 'Mark.Newey@ihg.com',
+      contractStatus: 'Active. ~$120K/yr (agency + ad spend). Calendar year budget cycle.',
+      retainer: '$120K/yr total media (Paid Social $55.5K, Paid Search $44.5K, OTAs ~$10K)',
+      currentStrategy: 'Rebranded Oct 2025 to "InterContinental Hayman Great Barrier Reef" (leverages "reef" as most-searched term in Asia).\nBRAND RULE: stays IC Hayman GBR in digital/editorial. "Hayman" only for PR/print/imagery. NEVER "Hayman by InterContinental".\nIsland resort. Brand awareness exists but LOCATION awareness is low.\nElopements focus (smaller groups, older demographic).\nM&E leads take up to 18 months to close.\nBest campaign ever: Anniversary Offer (3 months, PR support, $2.4M revenue).\nTrip.com testing imminent.\nOTA activation: need-date driven (not always-on).',
+      keyPages: 'Weddings/elopements performance page\nAccommodation offer landing pages (origin-coded)\nRebrand visibility work ongoing',
+      tools: 'Meta Ad Account: act_2213781495311366\nWebsite dev: Komosion (no FTP)\nWordPress CMS access\nEmail: Revenate\nPMS: Opera\nRate codes: PMIS\nBI: BI Data',
+      access: 'Same as Sydney: basic WordPress CMS, no FTP, Komosion dev blocks.',
+      risks: 'HAYMAN IN TROUBLE: Recent operational upheaval (new GM, F&B manager, island manager). 4 months of bad reviews and poor guest experience. All eyes on Hayman.\nKaren from Sanctuary Cove moving across to fix it.\nBehind on YoY revenue. Cost of living hitting luxury market hard.\nDomestic market weakening.\nSam (new DOSM) still building digital knowledge.\nNo direct booking conversion tracking (same IHG limitation).',
+      opportunities: 'International expansion: high appetite to target US first, then Asia/China. Domestic weakening = push for global.\nSchema in progress (rebrand visibility work).\nAEO workshop planned.\nTrip.com testing for Chinese holiday market.',
+      handoverNotes: 'Same franchise structure as Sydney (Mulpha-owned, Mark is interface).\nSam is new DOSM, integrating via monthly success planning with specific tactics to own.\nShauna is day-to-day marketing contact.\nKaren (10+ years IHG, from Sanctuary Cove) moving to Hayman to fix operations.\nFortnightly WIP cadence. Internal: Mason (reporting), Kath (paid social).\nOrigin codes: IKFGP (Family Getaway), IPGAD (Anniversary), IKRAI (All Inclusive), IX56Z (Reef Retreat), IDSG2 (Rush Now), ISHD1 (Indulgence), IKOTHDLO (Whitsundays Local).',
+      activeWork: 'Accommodation budget scaling (75% budget-lost impression share).\nEvents Quality Score fix (QS 1).\nMeta creative refresh.\nOTA test (Expedia/Booking.com sponsored ads).',
+      importantDocs: 'IHG Client Context Card (pw: growth88) | https://webprofits.ai/jess-g/ihg-client-context-card/\nLast Monthly Report Apr 2026 (pw: growth88) | https://webprofits.ai/jess-g/hayman-digital-performance-apr-2026/\nLLM Visibility Report May 2026 (pw: growth88) | https://webprofits.ai/jess-g/hayman-llm-visibility-may-2026/\nMSP June 2026 (pw: growth88) | https://webprofits.ai/jess-g/ihg-hayman-island-msp-june-2026/\nOffer Activation Framework (Notion) | https://www.notion.so/webprofits/InterContinental-Offer-Activation-Framework-31835e677f0780c5a39eecdb578173c7\nLow Season Strategy Feb-Jun (Notion) | https://www.notion.so/webprofits/Low-Season-Strategy-February-June-2b935e677f0780188895de2491d97ba4\nHayman Budget Sheet | https://docs.google.com/spreadsheets/d/1hLccbYwFtCXqhTNhp1BiMR2eCRGSjEr8qdj7GVybCA0/edit?gid=1233302711#gid=1233302711\nCRM Report | https://docs.google.com/spreadsheets/d/1sDVI-1YP1vKgEI4-tZUhf87SclWw4JWX1P3AjL2Bx60/edit?gid=963712881#gid=963712881\nRate Codes | https://docs.google.com/spreadsheets/d/1LiZm3OOQx9XbChrm9lZtNOI6Wx26CPvUTxBUZpK1DOE/edit?gid=732651501#gid=732651501\nIHG Report Creation (Fathom) | https://fathom.video/calls/699876470\nExpedia Travel Ads Optimisation Demo (Fathom) | https://fathom.video/calls/254493655\nOTA Reporting (Notion) | https://www.notion.so/webprofits/OTA-Reporting-29835e677f0780498570ebd2f07f71a1\nOTA Sponsored Listings Management (pw: growth88) | https://webprofits.ai/jess-g/ihg-ota-management/'
+    },
+    'ihg-sanctuary-cove': {
+      mainContact: 'Mark Newey (Area Manager), Karen (Marketing, 10+ years, moving to Hayman)',
+      contactEmail: 'Mark.Newey@ihg.com',
+      contractStatus: 'Active. ~$100K/yr (includes $60K WP retainer). Calendar year budget cycle.',
+      retainer: '~$100K/yr total (Paid Social $46K, Paid Search $42K, OTAs $12K + retainer)',
+      currentStrategy: 'Resort property, Gold Coast.\nStrong weddings + F&B (Lagoon Beach Club, The Fireplace).\nAlways-on OTA approach (unlike Sydney/Hayman which are need-date driven).\nAccommodation offers rotate frequently.\nGroups and conferencing active.\nWine dinners: Hewitson, Dog Point, Craggy Range + live entertainment.',
+      keyPages: 'Weddings performance page\nMICE performance page\nAccommodation offer landing pages',
+      tools: 'Meta Ad Account: act_758073551013654\nWebsite dev: Komosion (no FTP)\nWordPress CMS access\nEmail: Revenate\nPMS: Opera',
+      access: 'Same as Sydney: basic WordPress CMS, no FTP, Komosion dev blocks.',
+      risks: 'Karen (key marketing contact, 10+ years) moving to Hayman. Need new SC marketing relationship.\nSame franchise limitations: no booking conversion tracking, no Delphi access, fragmented email.\nWedding budget: QS fix needed before reallocating.',
+      opportunities: 'Budget increase case built: current $6,925/mo recommended to $12,425/mo (+79%). Impression share gap analysis + Meta CPM headroom.\nSchema comprehensive (audited via Notion, verified in LLM report).\nAEO workshop planned.\nAlways-on OTA gives steady baseline vs other properties.',
+      handoverNotes: 'Same franchise structure (Mulpha-owned, Mark interface).\nKaren has been highly capable, structured operation with strong ideas. Her departure to Hayman leaves a gap.\nFortnightly WIP cadence. Internal: Mason (reporting), Kath (paid social).\nOrigin codes: IKFGP (Family Dreamworld), IKHDA (Sweet Stay), AE3IP (Coast Into Summer), IYMSL (Stay Longer), IKDH3 (Stay and Play).\nIKHD3/IKDH3 origin code typo was fixed (transposed characters in 2025 data).',
+      activeWork: 'Google Ads QS fix on generic terms.\nWedding budget reallocation to branded (pending QS fix).\nJune IHG tactical campaign launch.',
+      importantDocs: 'IHG Client Context Card (pw: growth88) | https://webprofits.ai/jess-g/ihg-client-context-card/\nLast Monthly Report Apr 2026 (pw: growth88) | https://webprofits.ai/jess-g/sanctuary-cove-digital-performance-apr-2026/\nLLM Visibility Report May 2026 (pw: growth88) | https://webprofits.ai/jess-g/sanctuary-cove-llm-visibility-may-2026/\nMSP June 2026 (pw: growth88) | https://webprofits.ai/jess-g/sanctuary-cove-msp-june-2026/\nBudget Increase Case (pw: growth88) | https://webprofits.ai/jess-g/sanctuary-cove-budget-overview-may-2026/\nOffer Activation Framework (Notion) | https://www.notion.so/webprofits/InterContinental-Offer-Activation-Framework-31835e677f0780c5a39eecdb578173c7\nLow Season Strategy Feb-Jun (Notion) | https://www.notion.so/webprofits/Low-Season-Strategy-February-June-2b935e677f0780188895de2491d97ba4\nSanctuary Cove Budget Sheet | https://docs.google.com/spreadsheets/d/1ulkot2qcDugthEGagk9cZiXGzK12_kHEjmIjydBtRaA/edit?gid=2130523880#gid=2130523880\nRate Codes | https://docs.google.com/spreadsheets/d/1LiZm3OOQx9XbChrm9lZtNOI6Wx26CPvUTxBUZpK1DOE/edit?gid=732651501#gid=732651501\nIHG Report Creation (Fathom) | https://fathom.video/calls/699876470\nExpedia Travel Ads Optimisation Demo (Fathom) | https://fathom.video/calls/254493655\nOTA Reporting (Notion) | https://www.notion.so/webprofits/OTA-Reporting-29835e677f0780498570ebd2f07f71a1\nOTA Sponsored Listings Management (pw: growth88) | https://webprofits.ai/jess-g/ihg-ota-management/'
+    },
+    'jmc-academy': {
+      mainContact: 'Rosemary Beer',
+      contactRole: 'Interim Head of Digital Channel. Claire (content reviewer) left JMC (IP concerns re AI training). Annie Shea moved on. Grace (publishing, 2-3 days/wk, unresponsive). Dave (CTO). Chiminda (confirmed V2O content can be used despite Claire objection).',
+      contactEmail: 'rbeer@jmc.edu.au',
+      contractStatus: 'Active',
+      retainer: '',
+      startDate: 'Pre-2025 (Annabelle was original lead, Jess took over Nov 2025)',
+      currentStrategy: 'Build topical authority moat around career entities for creative courses. Prior approach was 1-2 articles at a time with no holistic strategy.\nTarget: query-level career knowledge that universities don\'t create: career skills/tools, job/salary expectations, career pathways, alumni stories.\nCourses by adjusted MSV: Game Design 6.5K, EBM 5.2K, Audio Engineering 4.8K, Film & TV 3.1K, Animation 2.9K, Acting 2.5K, Songwriting 2K, Music Theatre 1.1K.\nUnderperforming courses: design, music, EDM. Audio engineering only strong one (not a coincidence: only course with real SEO content investment).\nTwo audiences: prospective students AND parents (parents reluctant about creative careers, need to debunk myth authentically).\nContent skill created using V2O transcripts with Claire across entertainment, business management, game skills, design, film & production.\nCareer entities being rolled out first. Next: skills articles (one per vocation), software/tools taught in modules (big JMC differentiator: e.g. $1M recording studio, industry-leading game design software). Location pages also opportunity.\nTOV document confirmed by new team (no changes needed). SEO-focused but social team using it too.\nPAUSE new content creation until publishing cadence resumes. Priority is getting 24 approved articles live.',
+      keyPages: 'Course category pages (WARNING: board moved these to dynamic URLs, stripping SEO value. Bachelor/diploma pages now outrank category pages. Was a board decision against our recommendation.)\nIndividual course pages (bachelor/diploma level: real URLs, these rank)\nCareer entity articles (rolling out)\nAlumni pages (being rebuilt as part of new site build)\nFAQ schema on course pages (took Annabelle 7 months to get implemented)',
+      tools: 'Claude Code skill for content creation (V2O transcript-based)\nNotion for content pipeline tracking\nSite checkout monitoring via Slack notifications',
+      access: 'Josette executes content, Jess reviews. Good system established.\nContent pipeline in Notion: what\'s being prepared, what\'s in review, what\'s ready.\n24 approved articles ready to publish (if new team agrees with old team\'s approvals). 2 articles currently live.\nSEO gets a 30-min slot monthly within Alexi\'s performance WIP (weekly/fortnightly). Very limited airtime.\nGrace (JMC) responsible for publishing but unresponsive (email, Notion, Slack). Publishing stuck for 2-3 months.\nJMC very protective of website backend: won\'t let us schedule/publish. We offered Embrocker access, declined.\nBoard is highly influential, changes things on a dime with no SEO consideration. Treat SEO as afterthought.\nAll developers recently changed: no one available to implement technical changes.\nRosemary working on 3 priorities: website migration, content migration, alumni. Now absorbing more scope.\nRelationship friction: Rosemary perceived Jess as "bullying" re publishing pressure. Ben (fresh face) taking over to reset.',
+      risks: 'Reddit: #1 citation source, 101 citations in May (+87% MoM), 29% negative sentiment (diploma mill, money grab, fee complaints). Can\'t generate student reviews.\nBranded traffic can\'t differentiate prospective students from existing students logging into portal.\nWebsite very unstable: 504 timeouts, hosting provider issues. May Visibility Report flagged it. No confirmation of fix.\nBoard overrides SEO: moved course category pages to dynamic URLs against our recommendation, stripping SEO value.\nClaire left JMC with IP concerns (asked to redact V2O transcripts, Chiminda overruled). New team may not agree with approved content.\nRelationship friction with Rosemary: perceived pressure as bullying. Asked to redact meeting transcripts. Ben taking over as fresh face.\nGrace (publishing) unresponsive for 2-3 months. One article per week pace means year-end to clear backlog.\nAI sensitivity: JMC\'s industry dealing with real AI concerns. Anything perceived as AI-written could backfire, especially on Reddit.\nAll developers recently changed: no implementation capacity.',
+      opportunities: '24 approved articles ready to publish immediately. Getting these live is the #1 priority.\nWebsite rebuild: Rosemary scoping now (content audit phase). Opportunity for us to be involved in SEO/AEO for new site. Jess proposed scope in Apr email (forwarded to Ben).\nReddit strategy: test RedPro on Webprofits first (AI sensitivity concern for JMC). Trial 7 days, evaluate if Claude Code can replicate.\nAlumni pages: redo to be more citable, authentically counter negative Reddit threads. Blocked by new build timeline.\nFAQ schema on course pages done. Alumni schema proposed but status unclear (dev team changed).\nBen doing fresh on-site optimisation/health check review as new SEO on account.\nBen reviewing Annabelle\'s schema work and proposing updates.\nBen visiting JMC in person next week: opportunity to meet Dave (CTO) and push through technical blockers.\nParent-focused content: debunking creative career myths with real data.\nJMC differentiator: $1M recording studio, industry-leading tools/software, career pathway depth.',
+      handoverNotes: 'Ben (Fitz) taking over SEO. Announced at JMC SEO WIP Jun 12 (Thursday). Fresh face to reset relationship with Rosemary.\nAnnabelle was original lead. Jess took over Nov 2025 because content wasn\'t moving.\nJosette executes content, Jess reviews. System works well. PAUSE new content creation until publishing resumes.\nV2O transcripts with Claire are gold: first-hand industry insight (e.g. $1M recording studio competitors don\'t have). Chiminda confirmed content can be used despite Claire\'s objection.\nTOV document locked in, confirmed by new team. No changes needed.\n24 articles approved and ready. 2 live. Pipeline in Notion. Grace responsible for publishing but unresponsive.\nKeyword research in hidden tabs of working document (linked in Notion board).\nBoard is powerful and makes impulsive decisions: moved course category pages to dynamic URLs against recommendation. Monitor for further changes.\nSEO WIP is 30min monthly slot within Alexi\'s performance cadence. Very limited airtime.\nReddit: #1 citation source, 29% negative. Test RedPro on Webprofits first (AI sensitivity). Don\'t use AI tools directly for JMC Reddit.\nWebsite rebuild scoping now: push to be involved. Jess proposed scope in Apr email (forwarded to Ben).\nBen visiting JMC in person: opportunity to meet Dave (CTO) and unblock technical implementation.',
+      activeWork: 'PAUSED: new content creation until publishing cadence resumes.\nPublishing pipeline: 24 approved articles awaiting scheduling (Grace unresponsive).\nBen: announce handover at JMC SEO WIP (Thu Jun 12).\nBen: on-site optimisation/health check review.\nBen: review Annabelle\'s schema work, propose updates.\nBen: visiting JMC in person next week to meet Dave (CTO).\nBen: follow up on website rebuild proposal (Apr email forwarded).\nWebsite stability monitoring (504 timeouts).\nRedPro 7-day trial: test on Webprofits first, then evaluate for JMC.',
+      importantDocs: 'JMC Handover Recording (Fathom, 13min) | https://fathom.video/share/zdrWsi_sX5Uh7qHpBL3pwqifDyBVxPzK\nBen & Jess JMC SEO Handover (Fathom, 27min) | https://fathom.video/share/P1Za4zF3spGwEs-Dx7vU3xWGzspLbatW\nJMC Tone of Voice Document | https://www.notion.so/webprofits/JMC-Tone-of-Voice-document-34235e677f07806b9300ecbdf228bdf7\nJMC LLM Visibility Report Apr 2026 (pw: growth88) | https://webprofits.ai/jess-g/jmc-academy-llm-visibility-april-2026/\nJMC LLM Visibility Report May 2026 (pw: growth88) | https://webprofits.ai/jess-g/jmc-academy-llm-visibility-may-2026/\nJMC LLM Dashboard Apr 2026 (pw: growth88) | https://webprofits.ai/jess-g/jmc-academy-llm-dashboard-april-2026/\nJMC SEO Strategy May 2026 (pw: growth88) | https://webprofits.ai/jess-g/jmc-academy-seo-strategy-may-2026/'
+    },
+
+    'storage-plus': { mainContact: 'Toby, Jai', contactEmail: 'toby@storageplus.com.au, jai@storageplus.com.au' },
+    'morrisons-law': {
+      mainContact: 'Matt Ward',
+      contactRole: 'Principal / Criminal and Traffic Law Specialist',
+      contractStatus: 'Active. Lead gen + local SEO.',
+      currentStrategy: 'Criminal and traffic law specialists. Two locations: Wollongong (established) and Campbelltown (launched ~3 months ago, Google My Business set up this week, NAP audit done).\nRank well for local terms and specialisations. Homepage ranks for most terms. Service/offence pages also rank.\nLeads come from homepage + Google My Business (mostly phone calls). Team member profile pages also generate leads.\nOpen 24 hours (people get arrested anytime).\nOnly accredited criminal lawyer in Campbelltown.\nNo hard lead target. Matt happy with volumes. Biggest challenge: CRM only just implemented, not configured yet (can\'t distinguish new vs existing, quality, channels).\nCampbelltown launch supported by Meta awareness campaign.',
+      keyPages: 'Homepage (primary ranking page)\nService/offence pages (all specialisations)\nTeam pages (lawyers with strong reputations generate leads)\nScenario case studies (high/mid/low range, convicted/not convicted)\nExpertise content (120 leads in 12 months)',
+      tools: 'V2O skill for Morrisons (Claude Code skill exists).\nContent process: V2O sessions with Matt Ward, verbatim quotes extracted, marked up.\nGoogle My Business x2 (Wollongong + Campbelltown).\nSchema across website.\nCRM: newly implemented, not yet configured.',
+      risks: 'Entity confusion: Matt prefers "Morrisons" not "Morrisons Law" despite the domain. But "Morrisons" alone = oyster bar, building company, etc. Needs brand clarification. Should reference "Morrisons Criminal and Traffic Law Specialists" on-site and off-site.\nGoogle removed call button from map pack. Lead volume impacted. Review CTAs on webpages.\nCRM not configured: can\'t measure lead quality, new vs existing, channel attribution.\nCampbelltown GMB is brand new, will take time to accrue authority.',
+      opportunities: 'Matt wants more assault cases (difficult/serious ones). Been ideating approaches.\nContent localisation: targeting South Coast, Western Sydney, Southwest Sydney, regional NSW court areas.\nScenario content performs well: mini case studies showing outcomes by charge type.\nLawyers Weekly article (Criminal Partner of Year finalist).\nCampbelltown: only accredited lawyer there. Lean into this.',
+      handoverNotes: 'Content pillars documented with planned content not yet done.\nV2O process: session with Matt, extract verbatim quotes, create scenarios, create content, update existing content if laws change or content goes stale.\nContent localisation underway: not just NSW-wide, targeting specific service areas.\nMeta campaign ran for Campbelltown awareness at launch.\nCampbelltown GMB needs: update link to location page + add UTM tracking.\n68-post blog audit + GA4 YTD performance + 5 pillar breakdown done (content handover report deployed).\nMatt is active in community, advocates for law reform and offender support. Lots of awards.',
+      activeWork: 'Campbelltown GMB: update link to location page + UTM tracking.\nCRM configuration (help them set up new vs existing, quality, channel tracking).\nPlanned content pieces not yet written (in Notion task board).\nAssault case content ideation.\nContent localisation (ongoing).',
+      contentManagement: 'V2O sessions with Matt Ward. New transcripts uploaded to Morrisons content skill (Claude Code).\nGenerate content from skill based on topic focus. Content goes to Matt for review via email.\nBest format: Google Docs (Matt prefers email workflow).\nMatt gives feedback and approves.\nPublishing: we now have website access so can publish directly, or Ciprian\'s team can publish. Usually goes to Foundry (developer agency).\nFoundry contact: Harry (harry@foundryco.com.au). Very responsive.\nProcess: get article images from Shutterstock Slack account (tag Ciprian, he downloads and shares). Send Harry the content docs, images, and scheduled dates. Harry handles the rest.\nImage source: Shutterstock via Slack (tag Ciprian to download).',
+      importantDocs: 'Content Handover Report (pw: growth88) | https://webprofits.ai/jess-g/morrisons-content-handover/\nHandover recording (Fathom, 9 min) | https://fathom.video/share/KF7YkzNNspf5GjFQB4tXHydicdE1fbqE\nHandover meeting (Fathom) | https://fathom.video/calls/694918983'
+    },
+    'artilux': { mainContact: 'Jorge', contactEmail: 'george@artilux.com.au' },
+    'inpro': { mainContact: 'TBD' },
+    'fiig-securities': {
+      mainContact: 'Sarah Lepelaar',
+      contractStatus: 'RFP incoming + separate SEO content audit scope proposed',
+      currentStrategy: 'Not an active SEO client. Jess had consulting relationship with Sarah.\nCybersecurity attack response page: collaborative build, nearly done, ironing out language (client hesitant to be definitive, Jess pushing them to own the narrative).\nSeparate scope proposed: full SEO content audit of news/blog section. 10 years of content, canonicalization was done incorrectly years ago, no authorship, no research methodologies, no internal linking. Massive dead weight on site.\nJess advised Sarah this should be separate to Fluid (RFP) because performance marketing will prioritize paid + lifecycle, not content.\nSarah interested in this separate content scope. Was trying to reach Jess to discuss.',
+      risks: 'Previous RFP experiences were frustrating (Ben untrusting).\nNews section is a mess: 10 years of bad canonicalization, no authorship, no internal linking.\nSarah loves to talk SEO/AEO (Friday wine catch-ups). That relationship level won\'t be replicated.',
+      opportunities: 'RFP for full Fluid scope (performance marketing).\nSeparate SEO content audit scope (Jess wrote the brief).\nSarah may have joined Webprofits Academy.\nContent audit skill opportunity (Ben wants this as a repeatable process).',
+      handoverNotes: 'Ben taking as sales lead (RFP + scope).\nEmail Ben: cybersecurity brief + meeting Fathoms.\nNot doing SEO for them right now. Opportunity on table.\nSarah relationship: senior, loves SEO discussion. Won\'t be replicated, will need to organically grow.',
+      activeWork: 'Cybersecurity response page (nearly done, pending language finalization).\nRFP about to be sent across.\nSeparate SEO content audit scope (Jess wrote brief, needs handover to Ben).',
+      importantDocs: 'LLM Visibility Report Apr 2026 (pw: growth88) | https://webprofits.ai/jess-g/fiig-llm-visibility-apr-2026/\nSEO/AEO Proposal | https://webprofits.ai/jess-g/fiig-seo-aeo-proposal/\nAEO Scope Presentation + Content Approach (Fathom) | https://fathom.video/calls/597871441\nHandover recording (Fathom) | https://fathom.video/share/5nPHj5cvJyBKX9p8ia4vVzXeHm7xSKLa'
+    },
+    'futurity': {
+      mainContact: 'TBD',
+      contractStatus: 'Active project (website uplift)',
+      handedTo: 'Matt',
+      currentStrategy: 'Website uplift project: redoing all key product pages for new product launches. AEO and SEO optimized.\nMatt and Jess finalizing delivery. Should be done in June (Jess\'s last month).',
+      handoverNotes: 'Matt is leading this. Working session to finalize delivery.\nProject should complete before Jess leaves.\nNo ongoing SEO retainer, just this project.',
+      activeWork: 'Product page rewrites for new product launch (AEO/SEO optimized). Finalizing delivery.',
+      importantDocs: 'Handover recording (Fathom) | https://fathom.video/share/5nPHj5cvJyBKX9p8ia4vVzXeHm7xSKLa'
+    },
+    'aus-institute-fitness': {
+      mainContact: 'Louise',
+      contractStatus: 'Active (Paid). SEO scope picking up again.',
+      currentStrategy: 'Rahil runs paid search. No active SEO scope currently but Louise wants to restart SEO.\nLouise reaches out to Jess directly for advice (campaign ideas, domain migrations).\nVast Fitness launching on new domain as Vast Nutrition. Louise asked Jess for advice on migration.\nNo SEO expertise within the business.\nMatt pitched Claude Code + AEO/SEO direction. Louise excited about it.',
+      risks: 'Vast Fitness domain migration could go wrong without SEO guidance.\nLouise calls Jess directly out of the blue. That relationship needs to transfer.',
+      opportunities: 'SEO scope restart in June output. Goes to Eitan.\nAEO/SEO positioning resonated with Louise.\nVast Nutrition domain migration = immediate project.',
+      handoverNotes: 'Eitan taking over SEO.\nLouise = direct relationship with Jess, will need re-establishing.\nRetainer: $4,500/mo (paid only currently).',
+      activeWork: 'Vast Fitness to Vast Nutrition domain migration (Louise seeking advice).\nSEO scope restart discussion.',
+      importantDocs: 'AIF LLM Visibility Report Apr 2026 (pw: growth88) | https://webprofits.ai/jess-g/aif-llm-visibility-apr-2026/\nHandover recording (Fathom) | https://fathom.video/share/5nPHj5cvJyBKX9p8ia4vVzXeHm7xSKLa'
+    },
+    'vinta-investment-group': {
+      mainContact: 'Martin Pascoe (Marketplace Gungahlin), Cecilia (Marketplace Gungahlin)',
+      contactRole: 'Martin = Waymark senior, long-standing relationship. Cecilia = new (started Apr 2026), hungry, moves fast, interested in AI training.',
+      contractStatus: 'Active (Paid) + Pending SEO Proposal + Future Expansion',
+      retainer: '$4,250+GST/mo combined (Maraboon Tavern + Marketplace Gungahlin)',
+      currentStrategy: 'Umbrella org: Vinta Investment Group. Two active properties:\n1. Maraboon Tavern (Motor Inn) - Emerald, QLD. Paid search only.\n2. Marketplace Gungahlin - Shopping centre, Canberra. Paid search + Meta.\nNot a direct SEO client yet. SEO proposal pending for Marketplace ($6,500+GST one-off, 3 months, subject to forecast approval).\nBrendan Browning is account lead.\nVinta is old-school, moves slowly. Exclusively on Microsoft CoPilot internally (AI policy). Third-party AI use (Claude) likely fine but check policy. Contract is old, Marty recommends not reopening it.\nKPMG running a marketing transformation project for Vinta (future state). AI will come up in that.\nQLD team (hotels, entertainment, accommodation) is buried in workload. Second-phase opportunity after Marketplace SEO.',
+      keyPages: 'Maraboon: maraboonmotorinnemerald.com.au/accommodation/\nMarketplace: marketplacegungahlin.com.au',
+      tools: 'Maraboon Google Ads: 5331726872\nMarketplace Google Ads: 1099713367\nMarketplace Meta: not in Pipeboard MCP\nSlack: #vinta-investment-group (C8FST8Q11)\nSupabase project: bbd3eed0',
+      risks: 'Maraboon: General campaign relevance crisis (IS dropped 84.4% to 61.6%). Top waste: "emerald accommodation" $184.91 / 0 conversions.\nMarketplace: 9,941 "conversions" are all Google-modelled Store Visits, NOT leads. Conversion tracking needs cleanup. 120+ paused legacy campaigns since 2016.\nMarketplace Meta $16 CPA unvalidated on-platform.\nVinta AI policy: CoPilot only internally. IT governance question if Claude use becomes visible. Keep Claude work as deliverable output, not a policy issue.',
+      opportunities: 'Marketplace SEO proposal: technical fixes, NAP corrections, category/cuisine content pages, AI visibility. 3-month scope.\nMaraboon LP rebuild for accommodation.\nMarketplace branded search performing exceptionally (54 conv / 125 clicks / $104).\nQLD team second phase: brainstorm pain points, ad resizing/formatting automation, creative rollout efficiency.\nCecilia interested in AI training. Webprofits Academy ($600/mo lifetime) could be a fit.\nBoard report automation (currently 6 days, could be minutes).\nExpansion into entertainment, accommodation, any conversion-point properties.',
+      handoverNotes: 'Brendan is execution lead on both properties. Paul is senior lead (above Brendan). Marty expects someone senior as go-to.\nMarketplace SEO proposal awaiting forecast approval. Cecilia driving it.\nMaraboon General campaign relevance fix is priority.\nMarketplace PMax store visits are NOT real conversions.\nMeta CPA needs on-platform validation.\nMarty is the senior relationship. Old-school, moves slowly, but genuinely interested in AI and doesn\'t want to fall behind.\nPhased approach agreed: (1) Marketplace SEO with Cece + Brendan, (2) QLD team brainstorm on pain points and efficiency.\nUpsell opportunity: QLD properties (hotels, entertainment, accommodation). Waymark team (social) buried in workload, especially image resizing. Solve that = deal.\nEmail Marty + Brendan re: upsell, include Paul.\nSend Marty Webprofits Academy info.\nCheck Vinta AI policy re: third-party AI before expanding scope.',
+      activeWork: 'June 2026 MSPs delivered for both properties.\nMarketplace SEO proposal pending forecast approval.\nMaraboon LP rebuild needed.\nMarketplace conversion tracking cleanup.',
+      importantDocs: 'Maraboon MSP June 2026 (pw: growth88) | https://webprofits.ai/jess-g/maraboon-tavern/msp/june-2026/\nMarketplace MSP June 2026 (pw: growth88) | https://webprofits.ai/jess-g/marketplace-gungahlin/msp/june-2026/\nMarketplace SEO Proposal | https://webprofits.ai/jess-g/marketplace-gungahlin/proposal/\nMarketplace SEO Audit (Notion) | https://webprofits.notion.site/Marketplace-Gungahlin-V2-31435e677f07809f9ddef5baa0526d4e\nVinta handover recording May 15 (Fathom) | https://fathom.video/share/d8_iJs6p3PK-Cuu-HAhWe6cH5WzfGhzf\nJess + Fitz handover Jun 1 (Fathom) | https://fathom.video/share/5nPHj5cvJyBKX9p8ia4vVzXeHm7xSKLa'
+    },
+    'tool-handovers': {
+      mainContact: 'Ben Fitzpatrick (receiving)',
+      contactRole: 'All SEO tools and vendor relationships transferring to Ben.',
+      currentStrategy: 'Three vendor relationships and multiple account logins need transferring before Jess leaves.\n\n1. SEMrush: Intro Ben to new SEMrush rep. Not this week or next, but before end of June.\n2. BrightLocal: Email BrightLocal re: account transfer to Ben.\n3. DataForSEO: UK-based. Meetings are 8-9pm Friday nights. Intro Ben, then schedule intro call. Jess had direct relationship.\n4. Login audit: Jess is the only one with login info for many accounts. Day set aside to audit all logins and update access across all SEO clients.\n5. GMB/GBP: All moved from old Webprofits account into admin. Ben may not know this yet.',
+      handoverNotes: 'SEMrush: schedule intro with new rep before end of June.\nBrightLocal: email re: account transfer.\nDataForSEO: UK timezone (Friday 8-9pm calls). Choose carefully who takes this.\nLogin audit: Jess has a day scheduled to go through all accounts where she is the only one with access.\nGMB/GBP: retired old Webprofits account, everything now in admin.',
+      activeWork: 'Login audit day (scheduled for next week as of Jun 1).\nSEMrush intro (not this week or next).\nBrightLocal transfer email.\nDataForSEO intro.',
+      importantDocs: 'Jess + Fitz handover Jun 1 (Fathom) | https://fathom.video/share/5nPHj5cvJyBKX9p8ia4vVzXeHm7xSKLa',
+      tool__SEMrush__overview: 'Primarily used for backlink analysis. DataForSEO handles most other SEO data needs but cannot do backlinks. Also critical for Greenstone: maintains continuity of exact links to grant program URLs across AU Seniors, NZ Seniors, and Buddy.',
+      tool__SEMrush__why: 'Backlink data that DataForSEO cannot provide. Greenstone grant URL tracking requires exact link continuity in SEMrush.',
+      tool__SEMrush__contact: 'August Cox-Taylor\naugust.coxtaylor@semrush.com\n(New rep as of Jun 2026 - Jess had intro call today)',
+      tool__SEMrush__handedTo: 'Eitan',
+      tool__SEMrush__cost: '~$200 USD/mo',
+      tool__SEMrush__topup: 'Recurring payment on Alex\'s credit card (recently updated).',
+      tool__SEMrush__process: '',
+      tool__BrightLocal__overview: 'Used specifically to expedite NAP (Name, Address, Phone) citation builds. Low-touch once set up. Primary use case is Roomia new facility launches. May see higher usage if expanded to entity work.',
+      tool__BrightLocal__why: 'Fastest way to build NAP citations at scale for new locations. Critical for Roomia facility launches and local SEO foundation.',
+      tool__BrightLocal__contact: 'Will Sixsmith\nwill.sixsmith@brightlocal.com\nUK-based (late-night calls if needed, but rarely required now that everything is set up)',
+      tool__BrightLocal__handedTo: '',
+      tool__BrightLocal__cost: 'Pay per campaign, not monthly. Alex loads ~$1,000 when balance is low. Lasts up to 9 months depending on usage (mostly driven by Roomia facility launches).',
+      tool__BrightLocal__topup: 'Reach out to Alex when balance is running low. He tops up ~$1,000 at a time.',
+      tool__BrightLocal__process: 'NAP Audit BrightLocal Build (Notion) | https://www.notion.so/webprofits/NAP-Audit-Bright-Local-Build-63565e37b03f4e14a327c7379987e138',
+      tool__EarnedMedia__overview: 'External digital PR and link building partner. Runs targeted link building campaigns for SEO clients. Invoiced monthly at end of each month.',
+      tool__EarnedMedia__why: 'Targeted link building campaigns. Supplements in-house SEO with dedicated outreach and digital PR for backlink acquisition.',
+      tool__EarnedMedia__contact: 'Luke Fitzpatrick\nluke@earnedmedia.com.au',
+      tool__EarnedMedia__handedTo: 'Ahtan',
+      tool__EarnedMedia__cost: '$325 per link. Typically scoped with 50% margin when reviewing and pricing into client retainers.',
+      tool__EarnedMedia__topup: 'Monthly invoice released at end of each month. No prepayment or credit system.',
+      tool__EarnedMedia__process: 'Earned Media Linkbuilding (Notion) | https://www.notion.so/webprofits/Earned-Media-Linkbuilding-81e36bc903864795866db688acdc1d68',
+      tool__DataForSEO__overview: 'API-based SEO data platform. Handles rankings, SERP data, content analysis, keyword research, and most SEO data needs except backlinks (use SEMrush for that). Also provides LLM citation monitoring (annual subscription product).',
+      tool__DataForSEO__why: 'Primary SEO data source for rankings, SERP analysis, content gap analysis, keyword data. Cheaper and more flexible than traditional SEO tools for API-level access.',
+      tool__DataForSEO__contact: 'Anna Kyselova (Customer Success Manager)\nanna.kyselova@dataforseo.com\nEuropean business. Meetings typically 8pm+ AEST, but they try to accommodate earlier if needed.',
+      tool__DataForSEO__handedTo: '',
+      tool__DataForSEO__cost: 'Pay-as-you-go credit system with automatic top-up (on Alex\'s card). Some products on annual subscription (e.g. LLM citations) which auto-renew each year.',
+      tool__DataForSEO__topup: 'Automatic top-up configured. If credit runs out unexpectedly, speak to Alex.',
+      tool__DataForSEO__process: 'DataForSEO Academy | https://academy.dataforseo.com/',
+      tool__GMB_GBP__overview: 'Google Business Profile accounts for all SEO clients. All profiles managed through the admin@webprofits.com.au account.',
+      tool__GMB_GBP__why: 'Local SEO foundation. Required for local pack visibility, reviews, and Google Maps presence.',
+      tool__GMB_GBP__contact: 'No vendor contact. Request client GBP access via admin@webprofits.com.au.',
+      tool__GMB_GBP__handedTo: '',
+      tool__GMB_GBP__cost: 'Free (Google product). No subscription.',
+      tool__GMB_GBP__topup: 'N/A',
+      tool__GMB_GBP__process: '',
+      tool__GrantMatch__overview: 'Webprofits-owned website (grantmatch.com.au) created to facilitate outreach for Greenstone. Used as a third-party brand to run scholarship grant outreach campaigns to universities for backlink acquisition.',
+      tool__GrantMatch__why: 'Greenstone emails were perceived as spammy. Grant Match operates as a separate brand to improve outreach deliverability and response rates for link building via educational institution scholarships.',
+      tool__GrantMatch__contact: 'Alex Cleanthous (manages the website)\nJosette Bartolome (manages email inboxes and outreach)',
+      tool__GrantMatch__handedTo: '',
+      tool__GrantMatch__cost: 'Absorbed by Webprofits. No top-up or renewal required.',
+      tool__GrantMatch__topup: 'N/A. All associated costs absorbed by Webprofits. Helpful note for valuing the retainer.',
+      tool__GrantMatch__process: 'Grant Match website | https://grantmatch.com.au/\nOutreach managed via Instantly AI (Josette)\nGrant outreach tracked in SEO Task List Board under "Grant Outreach Monthly Reporting"'
+    },
+    'roomia': {
+      mainContact: 'Kathy Swaffer',
+      contactRole: 'Marketing Manager',
+      contactEmail: 'kathy@roomia.com.au',
+      contractStatus: 'FY27 Locked In',
+      retainer: '$12,000/mo total (Paid ~70%, Social small, SEO + Content remainder)',
+      startDate: 'October 2022',
+      currentStrategy: '15 facilities (5 mature, 8 establishing, 6 planned FY27)\nGreenfield builds or Storage King lease takeovers\n80% D2C, 20% B2B\nSeasonality: spring-Feb peak\n20km radius competitive catchment\nFY27 budget/forecast built with Rahil per-location\nNew facility launch checklist exists\nBrand campaign launched May 2026',
+      keyPages: 'Find Storage Near Me page (4 links/mo, 30 referring domains)\nLocation pages (new city/state hierarchy in production)\nInteractive moving house checklist\nStorage Tips content hub',
+      tools: 'Internal Slack channel (client not in it).\nNotion content hub.\nMeeting notes/agenda in Notion (exception reporting format).\nExternal link building partner.\nBrightLocal',
+      access: 'Dev partner: R6 (storage-specific, built reservation/booking engine).\nCRM: SiteLink.',
+      risks: 'Client management: Kathy has analysis paralysis, ~20 questions/week on reporting/performance\nBoard pressure drives urgency\nHas improved but still demanding\nSite speed: homepage + reservation engine (R6 iframe) slow, fixed then regresses\nGoogle local pack call button removed, hurt non-paid leads\nLow search volumes per location (e.g. 40 for "self storage Truganina")',
+      opportunities: '"Storage near me" ranking: competitors all rank, Roomia now has national footprint to compete\nLLM visibility report not yet run\nAudience pages (students, ecom) for AI visibility\nSuburb pages could be programmatically scaled\nLocation pages optimised for calls\nException-reporting dashboard with Rahil to reduce account management overhead',
+      handoverNotes: 'Rahil is paid lead, does monthly reporting via skill\nEitan reviews\nJess meeting Kathy in person Fri May 30, intro Eitan following week\nOrganic = 2 WIPs/mo\nException reporting: green/amber/red per location, prep notes for amber/red before meetings\nClient trained to accept "no" on busy work\nJune MSP: Eitan executes, Jess provides feedback\nGreenfield launches = hype/tease pre-launch\nStorage King takeovers = wait for contract transfer\nFY27 FORECASTING PROCESS (documented 12 Mar): 1) Data prep from client master sheet to FY CSVs 2) Paid forecast via Google Ads historical per-location, non-brand CPCs only, 15% new market premium 3) Brand growth model: 3 scenarios (10/20/30%), use 20% assumption 4) Organic forecast from GA4 + DataForSEO local volume + seasonality 5) Near-me opportunity gap analysis. Always present on call, never email cold. Send Monday earliest.',
+      activeWork: 'New city/state location pages in production (deploy before Jess leaves)\n"Find storage near me" link building campaign\nContent pieces in Notion awaiting client review\nArticles recently optimised with schema/tables/BLUF\nSchedule working session: Rahil + Eitan re exception-reporting dashboard',
+      importantDocs: 'New facility launch checklist | https://docs.google.com/spreadsheets/d/1pKyvEO-W-is5MSx3qY9MDehSqeBd11aWM4a2ACb37NE/edit?gid=565185309#gid=565185309\nFY27 Strategy (pw: roomia2026) | https://webprofits.ai/rahil-s/roomia/fy27-strategy/\nLast report Apr 2026 (pw: roomia2026) | https://webprofits.ai/rahil-s/roomia-april2026/\nFY27 Forecasting Process Recording (117min, Jess+Rahil, 12 Mar) | https://fathom.video/calls/598314178\nHandover recording (Fathom) | https://fathom.video/calls/685140080'
+    },
+  };
+  Object.entries(contacts).forEach(([id, fields]) => {
+    Object.assign(defaults.clients[id], fields);
+  });
+
+  return defaults;
 }
 
 let data = loadData();
@@ -691,7 +1163,23 @@ function buildTabs() {
   const nav = document.getElementById('tabNav');
   const container = document.getElementById('tabContainer');
 
+  const noTab = ['urban-newtown'];
   CLIENTS.forEach(c => {
+    if (data.comms[c.id].status === 'not-required' || noTab.includes(c.id)) return;
+    if (c.id === 'fiig-securities') {
+      const nrrLbl = document.createElement('div');
+      nrrLbl.className = 'tab-nav-label';
+      nrrLbl.style.marginTop = '8px';
+      nrrLbl.textContent = 'Active NRR Work';
+      nav.appendChild(nrrLbl);
+    }
+    if (c.id === 'tool-handovers') {
+      const lbl = document.createElement('div');
+      lbl.className = 'tab-nav-label';
+      lbl.style.marginTop = '8px';
+      lbl.textContent = 'Tools';
+      nav.appendChild(lbl);
+    }
     const btn = document.createElement('button');
     btn.dataset.tab = c.id;
     btn.textContent = c.name;
@@ -700,9 +1188,70 @@ function buildTabs() {
     const div = document.createElement('div');
     div.className = 'tab-content';
     div.id = `tab-${c.id}`;
-    div.innerHTML = buildClientTab(c);
+    div.innerHTML = c.id === 'tool-handovers' ? buildToolsTab(c) : buildClientTab(c);
     container.appendChild(div);
   });
+}
+
+function linkify(text) {
+  if (!text) return '';
+  return text.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+}
+
+function listify(text) {
+  if (!text) return '';
+  const lines = text.split('\n').filter(l => l.trim());
+  if (lines.length <= 1) return linkify(text);
+  return '<ul>' + lines.map(l => `<li>${linkify(l.trim())}</li>`).join('') + '</ul>';
+}
+
+function renderDocLinks(text) {
+  if (!text) return '';
+  return text.split('\n').filter(l => l.trim()).map(line => {
+    const trimmed = line.trim();
+    const urlMatch = trimmed.match(/(https?:\/\/[^\s]+)/);
+    if (urlMatch) {
+      const url = urlMatch[1];
+      const label = trimmed.replace(url, '').replace(/^\s*[-|:]\s*/, '').replace(/\s*[-|:]\s*$/, '').trim();
+      return `<div class="doc-link"><a href="${url}" target="_blank" rel="noopener">${label || url}</a></div>`;
+    }
+    return `<div class="doc-link">${trimmed}</div>`;
+  }).join('');
+}
+
+function buildToolsTab(client) {
+  const d = data.clients[client.id];
+  const toolNames = ['SEMrush', 'BrightLocal', 'DataForSEO', 'GMB_GBP', 'EarnedMedia', 'GrantMatch'];
+  const toolLabels = { 'SEMrush': 'SEMrush', 'BrightLocal': 'BrightLocal', 'DataForSEO': 'DataForSEO', 'GMB_GBP': 'GMB / GBP', 'EarnedMedia': 'Earned Media (Link Building)', 'GrantMatch': 'Grant Match' };
+  return `
+    <div class="client-header">
+      <span class="label">SEO tool &amp; vendor handovers</span>
+      <h2>${client.name}</h2>
+    </div>
+    <div class="tools-grid">
+      ${toolNames.map(name => {
+        const g = (f) => d['tool__' + name + '__' + f] || '';
+        return `
+        <div class="tool-card" data-tool="${name}">
+          <div class="tool-card-header">${toolLabels[name]}</div>
+          <div class="tool-card-body">
+            <div class="field"><label>Overview</label><div class="field-value" contenteditable="true" data-client="tool-handovers" data-field="tool__${name}__overview" data-placeholder="What is this tool?">${g('overview')}</div></div>
+            <div class="field"><label>Why we use it</label><div class="field-value" contenteditable="true" data-client="tool-handovers" data-field="tool__${name}__why" data-placeholder="What problem does it solve?">${g('why')}</div></div>
+            <div class="field"><label>Vendor contact</label><div class="field-value" contenteditable="true" data-client="tool-handovers" data-field="tool__${name}__contact" data-placeholder="Name, email, timezone">${g('contact')}</div></div>
+            <div class="field"><label>Handed to</label><div class="field-value" contenteditable="true" data-client="tool-handovers" data-field="tool__${name}__handedTo" data-placeholder="Who is taking over this tool?">${g('handedTo')}</div></div>
+            <div class="field"><label>Approx. monthly cost</label><div class="field-value" contenteditable="true" data-client="tool-handovers" data-field="tool__${name}__cost" data-placeholder="e.g. ~$200/mo">${g('cost')}</div></div>
+            <div class="field"><label>How to top up / renew</label><div class="field-value" contenteditable="true" data-client="tool-handovers" data-field="tool__${name}__topup" data-placeholder="Credit-based? Subscription? Who approves?">${g('topup')}</div></div>
+            <div class="field"><label>Process / documentation</label><div class="field-value" contenteditable="true" data-client="tool-handovers" data-field="tool__${name}__process" data-placeholder="Link to process doc or Notion page">${listify(g('process'))}</div></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="notes-area full-width" style="margin-top:20px">
+      <h4>Important documents</h4>
+      <div class="doc-links-display" data-client="${client.id}" data-field="importantDocs">${renderDocLinks(data.clients[client.id].importantDocs || '')}</div>
+      <textarea class="doc-links-edit" data-client="${client.id}" data-field="importantDocs" placeholder="One link per line...">${data.clients[client.id].importantDocs || ''}</textarea>
+    </div>
+  `;
 }
 
 function buildClientTab(client) {
@@ -747,18 +1296,18 @@ function buildClientTab(client) {
         <h4>Current strategy</h4>
         <div class="field">
           <label>Strategy summary</label>
-          <div class="field-value" contenteditable="true" data-client="${client.id}" data-field="currentStrategy" data-placeholder="What are we doing for them? Key focus areas, current phase...">${d.currentStrategy}</div>
+          <div class="field-value" contenteditable="true" data-client="${client.id}" data-field="currentStrategy" data-placeholder="What are we doing for them? Key focus areas, current phase...">${listify(d.currentStrategy)}</div>
         </div>
         <div class="field">
           <label>Key pages / assets</label>
-          <div class="field-value" contenteditable="true" data-client="${client.id}" data-field="keyPages" data-placeholder="Important URLs, landing pages, content hubs...">${d.keyPages}</div>
+          <div class="field-value" contenteditable="true" data-client="${client.id}" data-field="keyPages" data-placeholder="Important URLs, landing pages, content hubs...">${listify(d.keyPages)}</div>
         </div>
       </div>
       <div class="client-card">
         <h4>Tools and access</h4>
         <div class="field">
           <label>Tools / platforms</label>
-          <div class="field-value" contenteditable="true" data-client="${client.id}" data-field="tools" data-placeholder="GSC, GA4, SEMrush, Ahrefs, CMS access...">${d.tools}</div>
+          <div class="field-value" contenteditable="true" data-client="${client.id}" data-field="tools" data-placeholder="GSC, GA4, SEMrush, Ahrefs, CMS access...">${listify(d.tools)}</div>
         </div>
         <div class="field">
           <label>Access / credentials notes</label>
@@ -769,24 +1318,33 @@ function buildClientTab(client) {
         <h4>Risks</h4>
         <div class="field">
           <label>Known risks / sensitivities</label>
-          <div class="field-value" contenteditable="true" data-client="${client.id}" data-field="risks" data-placeholder="Churn risk, difficult stakeholders, technical debt, pending issues...">${d.risks}</div>
+          <div class="field-value" contenteditable="true" data-client="${client.id}" data-field="risks" data-placeholder="Churn risk, difficult stakeholders, technical debt, pending issues...">${listify(d.risks)}</div>
         </div>
       </div>
       <div class="client-card">
         <h4>Opportunities</h4>
         <div class="field">
           <label>Upcoming opportunities</label>
-          <div class="field-value" contenteditable="true" data-client="${client.id}" data-field="opportunities" data-placeholder="Upsell potential, quick wins, planned projects...">${d.opportunities}</div>
+          <div class="field-value" contenteditable="true" data-client="${client.id}" data-field="opportunities" data-placeholder="Upsell potential, quick wins, planned projects...">${listify(d.opportunities)}</div>
         </div>
       </div>
     </div>
     <div class="notes-area full-width">
       <h4>Handover notes</h4>
-      <div class="notes-content" contenteditable="true" data-client="${client.id}" data-field="handoverNotes" data-placeholder="Click to add notes, context, history, risks, and handover instructions...">${d.handoverNotes}</div>
+      <div class="notes-content" contenteditable="true" data-client="${client.id}" data-field="handoverNotes" data-placeholder="Click to add notes, context, history, risks, and handover instructions...">${listify(d.handoverNotes)}</div>
     </div>
     <div class="notes-area full-width" style="margin-top:20px">
       <h4>Current active work</h4>
-      <div class="notes-content" contenteditable="true" data-client="${client.id}" data-field="activeWork" data-placeholder="Notion links, spreadsheets, active briefs, in-progress deliverables...">${d.activeWork || ''}</div>
+      <div class="notes-content" contenteditable="true" data-client="${client.id}" data-field="activeWork" data-placeholder="Notion links, spreadsheets, active briefs, in-progress deliverables...">${listify(d.activeWork || '')}</div>
+    </div>
+    <div class="notes-area full-width" style="margin-top:20px">
+      <h4>Content management</h4>
+      <div class="notes-content" contenteditable="true" data-client="${client.id}" data-field="contentManagement" data-placeholder="How content is created, reviewed, and published for this client...">${listify(d.contentManagement || '')}</div>
+    </div>
+    <div class="notes-area full-width" style="margin-top:20px">
+      <h4>Important documents</h4>
+      <div class="doc-links-display" data-client="${client.id}" data-field="importantDocs">${renderDocLinks(d.importantDocs || '')}</div>
+      <textarea class="doc-links-edit" data-client="${client.id}" data-field="importantDocs" placeholder="One link per line, e.g.:\nFY27 Strategy | https://example.com\nhttps://docs.google.com/spreadsheets/...">${d.importantDocs || ''}</textarea>
     </div>
   `;
 }
@@ -794,9 +1352,11 @@ function buildClientTab(client) {
 function buildCommTable() {
   const tbody = document.getElementById('commTableBody');
   tbody.innerHTML = '';
-  CLIENTS.forEach(c => {
+  const active = CLIENTS.filter(c => data.comms[c.id].status !== 'not-required');
+  active.forEach(c => {
     const d = data.comms[c.id];
     const tr = document.createElement('tr');
+    tr.className = `row-${d.status}`;
     tr.innerHTML = `
       <td><strong>${c.name}</strong></td>
       <td>
@@ -805,6 +1365,7 @@ function buildCommTable() {
           <option value="scheduled" ${d.status==='scheduled'?'selected':''}>Scheduled</option>
           <option value="partial" ${d.status==='partial'?'selected':''}>Partial</option>
           <option value="communicated" ${d.status==='communicated'?'selected':''}>Communicated</option>
+          <option value="not-required" ${d.status==='not-required'?'selected':''}>Not Required</option>
         </select>
       </td>
       <td><input type="date" class="date-input" data-comm="${c.id}" data-field="date" value="${d.date}"></td>
@@ -818,39 +1379,34 @@ function buildCommTable() {
       </td>
       <td contenteditable="true" data-comm="${c.id}" data-field="to" data-placeholder="Client contact name">${d.to}</td>
       <td contenteditable="true" data-comm="${c.id}" data-field="method" data-placeholder="Call / Email / Meeting">${d.method}</td>
+      <td>
+        <select class="status-select" data-comm="${c.id}" data-field="handedTo">
+          <option value="" ${!d.handedTo?'selected':''}>-</option>
+          <option value="Fitz" ${d.handedTo==='Fitz'?'selected':''}>Fitz</option>
+          <option value="Eitan" ${d.handedTo==='Eitan'?'selected':''}>Eitan</option>
+          <option value="Mason" ${d.handedTo==='Mason'?'selected':''}>Mason</option>
+          <option value="Matt" ${d.handedTo==='Matt'?'selected':''}>Matt</option>
+          <option value="Ales" ${d.handedTo==='Ales'?'selected':''}>Ales</option>
+          <option value="Olivia" ${d.handedTo==='Olivia'?'selected':''}>Olivia</option>
+          <option value="Ahtan" ${d.handedTo==='Ahtan'?'selected':''}>Ahtan</option>
+        </select>
+      </td>
+      <td>
+        <select class="status-select" data-comm="${c.id}" data-field="handoverDone">
+          <option value="No" ${d.handoverDone!=='Yes'?'selected':''}>No</option>
+          <option value="Yes" ${d.handoverDone==='Yes'?'selected':''}>Yes</option>
+        </select>
+      </td>
       <td contenteditable="true" data-comm="${c.id}" data-field="notes" data-placeholder="Reaction, follow-ups...">${d.notes}</td>
     `;
     tbody.appendChild(tr);
   });
 }
 
-function buildInternalTable() {
-  const tbody = document.getElementById('internalTableBody');
-  tbody.innerHTML = '';
-  INTERNAL_ROWS.forEach(name => {
-    const d = data.internal[name];
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><strong>${name}</strong></td>
-      <td>
-        <select class="status-select" data-internal="${name}" data-field="status">
-          <option value="pending" ${d.status==='pending'?'selected':''}>Pending</option>
-          <option value="scheduled" ${d.status==='scheduled'?'selected':''}>Scheduled</option>
-          <option value="partial" ${d.status==='partial'?'selected':''}>Partial</option>
-          <option value="communicated" ${d.status==='communicated'?'selected':''}>Communicated</option>
-        </select>
-      </td>
-      <td><input type="date" class="date-input" data-internal="${name}" data-field="date" value="${d.date}"></td>
-      <td contenteditable="true" data-internal="${name}" data-field="method" data-placeholder="Slack / Meeting / Email">${d.method}</td>
-      <td contenteditable="true" data-internal="${name}" data-field="notes" data-placeholder="Notes...">${d.notes}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
 
 function updateSummary() {
   const counts = { communicated: 0, scheduled: 0, partial: 0, pending: 0 };
-  CLIENTS.forEach(c => { counts[data.comms[c.id].status]++; });
+  CLIENTS.forEach(c => { if (data.comms[c.id].status !== 'not-required') counts[data.comms[c.id].status]++; });
   document.getElementById('countComm').textContent = counts.communicated;
   document.getElementById('countSched').textContent = counts.scheduled;
   document.getElementById('countPartial').textContent = counts.partial;
@@ -869,16 +1425,14 @@ document.getElementById('tabNav').addEventListener('click', e => {
 // Event delegation for editable fields
 document.addEventListener('blur', e => {
   const el = e.target;
+  if (el.tagName === 'SELECT' || el.tagName === 'INPUT') return;
   if (el.dataset.comm && el.dataset.field) {
     data.comms[el.dataset.comm][el.dataset.field] = el.textContent.trim();
     saveData();
   }
-  if (el.dataset.internal && el.dataset.field) {
-    data.internal[el.dataset.internal][el.dataset.field] = el.textContent.trim();
-    saveData();
-  }
-  if (el.dataset.client && el.dataset.field) {
-    data.clients[el.dataset.client][el.dataset.field] = el.innerHTML.trim();
+  if (el.dataset.client && el.dataset.field && !el.classList.contains('doc-links-display') && !el.classList.contains('doc-links-edit')) {
+    data.clients[el.dataset.client][el.dataset.field] = el.textContent.trim();
+    el.innerHTML = listify(el.textContent.trim());
     saveData();
   }
 }, true);
@@ -888,22 +1442,42 @@ document.addEventListener('change', e => {
     if (e.target.dataset.comm) {
       data.comms[e.target.dataset.comm].date = e.target.value;
     }
-    if (e.target.dataset.internal) {
-      data.internal[e.target.dataset.internal].date = e.target.value;
-    }
     saveData();
   }
   if (e.target.classList.contains('status-select')) {
     const field = e.target.dataset.field;
     if (e.target.dataset.comm) {
       data.comms[e.target.dataset.comm][field] = e.target.value;
-    }
-    if (e.target.dataset.internal) {
-      data.internal[e.target.dataset.internal][field] = e.target.value;
+      if (field === 'status') {
+        const row = e.target.closest('tr');
+        row.className = `row-${e.target.value}`;
+      }
     }
     saveData();
   }
 });
+
+// Doc links: click display to edit, blur textarea to save
+document.addEventListener('click', e => {
+  if (e.target.closest('.doc-links-display')) {
+    const display = e.target.closest('.doc-links-display');
+    const textarea = display.nextElementSibling;
+    display.style.display = 'none';
+    textarea.style.display = 'block';
+    textarea.focus();
+  }
+});
+document.addEventListener('blur', e => {
+  if (e.target.classList.contains('doc-links-edit')) {
+    const textarea = e.target;
+    const display = textarea.previousElementSibling;
+    data.clients[textarea.dataset.client][textarea.dataset.field] = textarea.value;
+    display.innerHTML = renderDocLinks(textarea.value);
+    textarea.style.display = 'none';
+    display.style.display = 'block';
+    saveData();
+  }
+}, true);
 
 function exportData() {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -935,7 +1509,6 @@ document.getElementById('importInput').addEventListener('change', e => {
 
 buildTabs();
 buildCommTable();
-buildInternalTable();
 updateSummary();
 </script>
 </body>
