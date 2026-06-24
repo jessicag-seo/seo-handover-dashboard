@@ -811,7 +811,7 @@ const CLIENTS = [
   { id: 'tool-handovers', name: 'Tool Handovers' },
 ];
 
-const STORAGE_KEY = 'seo-handover-dashboard-v75';
+const STORAGE_KEY = 'seo-handover-dashboard-v76';
 
 function loadData() {
   const saved = localStorage.getItem(STORAGE_KEY);
@@ -1275,10 +1275,10 @@ function buildClientTab(client) {
           <label>Primary contact</label>
           <div class="field-value" contenteditable="true" data-client="${client.id}" data-field="mainContact" data-placeholder="Name">${d.mainContact}</div>
         </div>
-        <div class="field">
+        ${client.id !== 'ihg-hayman' ? `<div class="field">
           <label>Role / title</label>
           <div class="field-value" contenteditable="true" data-client="${client.id}" data-field="contactRole" data-placeholder="e.g. Marketing Manager">${d.contactRole}</div>
-        </div>
+        </div>` : ''}
         <div class="field">
           <label>Email</label>
           <div class="field-value" contenteditable="true" data-client="${client.id}" data-field="contactEmail" data-placeholder="email@example.com">${d.contactEmail}</div>
