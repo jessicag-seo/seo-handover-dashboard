@@ -811,7 +811,7 @@ const CLIENTS = [
   { id: 'tool-handovers', name: 'Tool Handovers' },
 ];
 
-const STORAGE_KEY = 'seo-handover-dashboard-v76';
+const STORAGE_KEY = 'seo-handover-dashboard-v77';
 
 function loadData() {
   const saved = localStorage.getItem(STORAGE_KEY);
@@ -855,7 +855,7 @@ function loadData() {
   defaults.comms['investment-markets'] = { status: 'communicated', date: '2026-06-04', by: 'Jess', to: 'Cam & Nicole', method: 'Next WIP', handedTo: 'Eitan', handoverDone: 'Yes', notes: 'Good. Eitan smashed it.' };
   defaults.comms['keksia'] = { status: 'communicated', date: '2026-06-09', by: 'Jess', to: 'Nenad', method: 'Email', handedTo: 'Mason', handoverDone: 'Yes', notes: '' };
   defaults.comms['morrisons-law'] = { status: 'communicated', date: '2026-06-09', by: 'Jess', to: 'Matt', method: 'Next WIP', handedTo: 'Eitan', handoverDone: 'Yes', notes: '' };
-  defaults.comms['urban-newtown'] = { status: 'scheduled', date: '2026-06-24', by: 'Jess', to: 'Zsofia', method: 'Next WIP', handedTo: 'Mason', handoverDone: 'Yes', notes: '' };
+  defaults.comms['urban-newtown'] = { status: 'communicated', date: '2026-06-24', by: 'Jess', to: 'Zsofia', method: 'Next WIP', handedTo: 'Mason', handoverDone: 'Yes', notes: '' };
   defaults.comms['jmc-academy'] = { status: 'communicated', date: '2026-06-09', by: 'Ben', to: 'Rosemary', method: 'TBD', handedTo: 'Fitz', handoverDone: 'No', notes: '' };
   defaults.comms['fiig-securities'] = { status: 'communicated', date: '2026-06-04', by: 'Jess', to: 'Sarah', method: 'Email', handedTo: 'Matt', handoverDone: 'No', notes: 'RFP incoming. Sales relationship, not active SEO client. Ben taking lead.' };
   defaults.comms['futurity'] = { status: 'not-required', date: '', by: '', to: '', method: '', handedTo: 'Matt', handoverDone: 'No', notes: 'Website uplift project. Matt + Jess finalizing delivery. Should be done in June.' };
