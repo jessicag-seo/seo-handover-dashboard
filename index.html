@@ -811,7 +811,7 @@ const CLIENTS = [
   { id: 'tool-handovers', name: 'Tool Handovers' },
 ];
 
-const STORAGE_KEY = 'seo-handover-dashboard-v80';
+const STORAGE_KEY = 'seo-handover-dashboard-v81';
 
 function loadData() {
   const saved = localStorage.getItem(STORAGE_KEY);
@@ -1278,7 +1278,7 @@ function buildClientTab(client) {
           <label>Primary contact</label>
           <div class="field-value" contenteditable="true" data-client="${client.id}" data-field="mainContact" data-placeholder="Name">${d.mainContact}</div>
         </div>
-        ${client.id !== 'ihg-hayman' ? `<div class="field">
+        ${!['ihg-hayman','ihg-sydney','ihg-sanctuary-cove'].includes(client.id) ? `<div class="field">
           <label>Role / title</label>
           <div class="field-value" contenteditable="true" data-client="${client.id}" data-field="contactRole" data-placeholder="e.g. Marketing Manager">${d.contactRole}</div>
         </div>` : ''}
